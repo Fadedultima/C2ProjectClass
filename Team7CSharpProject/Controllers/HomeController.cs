@@ -13,5 +13,15 @@ namespace Team7CSharpProject.Controllers
         {
             return View();
         }
+
+        public ActionResult Post()
+        {
+            return View();
+        }
+
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
     }
 }

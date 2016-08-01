@@ -120,6 +120,7 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.19-build00125.js" />
     <Content Include="scripts\ai.0.22.19-build00125.min.js" />
+    <Content Include="Views\css\MainLayout.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,11 @@
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_MainLayout.cshtml" />
+    <Content Include="Views\Home\Post.cshtml" />
+    <Content Include="Views\Home\UserProfile.cshtml" />
+    <Content Include="Views\Shared\_FavoritesPartialView.cshtml" />
+    <Content Include="Views\Shared\_ProfilePartialView.cshtml" />
+    <Content Include="Views\Shared\_PostsPartialView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

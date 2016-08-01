@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Profile</h2>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#myprofile">My Profile</a></li>
+    <li><a data-toggle="tab" href="#myfavorites">Favorites</a></li>
+    <li><a data-toggle="tab" href="#myposts">Posts</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="myprofile" class="tab-pane fade in active">
+        <h3>My Profile</h3>
+        @Html.Partial("_ProfilePartialView");
+    </div>
+    <div id="myfavorites" class="tab-pane fade">
+        <h3>Favorites</h3>
+        @Html.Partial("_FavoritesPartialView");
+    </div>
+    <div id="myposts" class="tab-pane fade">
+        <h3>Posts</h3>
+        @Html.Partial("_PostsPartialView");
+    </div>
+</div>
+
