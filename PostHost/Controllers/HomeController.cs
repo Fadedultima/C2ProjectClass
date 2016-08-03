@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PostHost.Models;
+using Microsoft.AspNet.Identity;
 
 namespace PostHost.Controllers
 {
@@ -24,6 +26,24 @@ namespace PostHost.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult testAdding()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult testAdding(Content toAdd)
+        {
+            var user = User.Identity.GetUserId();
+
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                phdbec.Contents.Add(toAdd);
+                phdbec.SaveChanges();
+            }
             return View();
         }
     }

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Configuration;
 
 namespace PostHost.Models
 {
@@ -21,7 +22,7 @@ namespace PostHost.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("Name=DefaultConnection", throwIfV1Schema: false)
         {
         }
 
@@ -30,4 +31,6 @@ namespace PostHost.Models
             return new ApplicationDbContext();
         }
     }
+
+
 }
