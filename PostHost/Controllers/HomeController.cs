@@ -39,6 +39,10 @@ namespace PostHost.Controllers
         {
             var user = User.Identity.GetUserId();
 
+            toAdd.PostedBy = user;
+
+            toAdd.C_Id = "testID";
+
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
                 phdbec.Contents.Add(toAdd);
