@@ -14,8 +14,7 @@ namespace PostHost
     
     public partial class Content
     {
-
-        public string C_Id { get; set; }
+        public long C_Id { get; set; }
         public string PostedBy { get; set; }
         public string ImgURL { get; set; }
         public string Title { get; set; }

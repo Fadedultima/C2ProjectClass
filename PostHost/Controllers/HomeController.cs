@@ -38,6 +38,9 @@ namespace PostHost.Controllers
         public ActionResult testAdding(Content toAdd)
         {
             var user = User.Identity.GetUserId();
+            
+            toAdd.PostedBy = user;
+
 
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
