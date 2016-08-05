@@ -4,7 +4,7 @@
     <Key>
       <PropertyRef Name="C_Id" />
     </Key>
-    <Property Name="C_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="C_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="PostedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
     <Property Name="ImgURL" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
