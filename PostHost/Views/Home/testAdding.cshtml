@@ -12,12 +12,8 @@
     </div>
 </div>
 
-<div class="form-group">
-    @Html.LabelFor(m => m.ImgURL, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.ImgURL, new { @class = "form-control" })
-    </div>
-</div>
+<label for="file">Upload Image:</label>
+<input type="file" name="file" id="file" style="width: 100%;" />
 
 <div class="form-group">
     @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })

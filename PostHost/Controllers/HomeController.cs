@@ -17,28 +17,6 @@ namespace PostHost.Controllers
     {
         public ActionResult Index()
         {
-            // Parse the connection string and return a reference to the storage account.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("BlobConnection"));
-            // Create the blob client.
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
-            // Retrieve a reference to a container.
-            CloudBlobContainer container = blobClient.GetContainerReference("imagecontainer");
-
-            // Create the container if it doesn't already exist.
-            //container.CreateIfNotExists();
-            //container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-
-            // Retrieve reference to a blob named "myblob".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference("meowblob");
-
-            // Create or overwrite the "myblob" blob with contents from a local file.
-            WebRequest req = WebRequest.Create("http://i2.kym-cdn.com/photos/images/facebook/001/070/061/d96.jpg");
-            using (Stream stream = req.GetResponse().GetResponseStream())
-            {
-                blockBlob.UploadFromStream(stream);
-            }
-
             return View();
         }
 
@@ -62,12 +40,45 @@ namespace PostHost.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult testAdding(Content toAdd)
+        public ActionResult testAdding(Content toAdd, HttpPostedFileBase file)
         {
             var user = User.Identity.GetUserId();
             
             toAdd.PostedBy = user;
 
+            try
+            {
+                // Parse the connection string and return a reference to the storage account.
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("BlobConnection"));
+                // Create the blob client.
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+                // Retrieve a reference to a container.
+                CloudBlobContainer container = blobClient.GetContainerReference("imagecontainer");
+
+                string imageName = String.Format("postedhosted-{0}{1}",
+                    Guid.NewGuid().ToString(),
+                    Path.GetExtension(file.FileName));
+
+                // Create the container if it doesn't already exist.
+                //container.CreateIfNotExists();
+                //container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
+                // Retrieve reference to a blob named "myblob".
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference("meowblob");
+
+                // Create or overwrite the "myblob" blob with contents from a local file.
+                blockBlob.Properties.ContentType = file.ContentType;
+                blockBlob.UploadFromStream(file.InputStream);
+
+                string fullpath = String.Format("http://{0}{1}", blockBlob.Uri.DnsSafeHost, blockBlob.Uri.AbsolutePath);
+
+                toAdd.ImgURL = fullpath;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
