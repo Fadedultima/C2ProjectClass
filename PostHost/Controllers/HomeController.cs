@@ -129,5 +129,9 @@ namespace PostHost.Controllers
         }
 
 
+        public ActionResult Tagger()
+        {
+            return View();
+        }
     }
 }
