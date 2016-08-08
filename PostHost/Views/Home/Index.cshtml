@@ -6,7 +6,7 @@
 <div id="Gallery">
     @foreach (var m in Model)
     {
-        <a href="@Url.Action("ViewSingle", "Home")">
+        <a href="@Url.Action("ViewSingle", "Home", new { m.C_Id })">
             <img class="thumbnail" src="@Url.Content(m.ImgURL)" />
         </a>
     }
