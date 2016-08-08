@@ -114,5 +114,16 @@ namespace PostHost.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public ActionResult ViewSingle(long con_ident)
+        {
+            Content red = null;
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                red = phdbec.Contents.Find(con_ident);
+            }
+
+            return View(red);
+        }
     }
 }
