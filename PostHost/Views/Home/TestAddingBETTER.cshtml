@@ -1,36 +1,33 @@
 ﻿@model PostHost.Content
+
 @{
-    ViewBag.Title = "testAdding";
+    ViewBag.Title = "TestAddingBETTER";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>testAdding</h2>
-@using (Html.BeginForm("TestAdding", "Home"))
+<h2>TestAddingBETTER</h2>
+
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <h4>Content</h4>
         <hr />
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-
-        @*<div class="form-group">
-            <label for="file">Upload Image:</label>
-            <input type="file" name="file" id="file" style="width: 100%;" />
-        </div>*@
-
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @{ Html.EnableClientValidation(false); }
-            @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2", value="MEOW" })
+            @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PostedBy, new Dictionary<string, object> { { "data-val", false }, { "class", "form-controll" } })
+                @Html.EditorFor(model => model.PostedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @{ Html.EnableClientValidation(false); }
-            @Html.LabelFor(model => model.ImgURL, htmlAttributes: new { @class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.ImgURL, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ImgURL, new Dictionary<string, object> { { "data-val", false }, {"class", "form-controll" } })
+                @Html.EditorFor(model => model.ImgURL, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -57,3 +54,7 @@
         </div>
     </div>
 }
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

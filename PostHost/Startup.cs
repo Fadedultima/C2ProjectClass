@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using System.Web.ModelBinding;
 
 [assembly: OwinStartupAttribute(typeof(PostHost.Startup))]
 namespace PostHost

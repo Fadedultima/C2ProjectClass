@@ -37,13 +37,16 @@ namespace PostHost.Controllers
         [Authorize]
         public ActionResult testAdding()
         {
-            return View();
+            return View("TestAddingBETTER");
         }
+
         [HttpPost]
-        public ActionResult testAdding(Content toAdd, HttpPostedFileBase file)
+        public ActionResult TestAdding( Content toAdd )
         {
-            var user = User.Identity.GetUserId();
-            
+            string filename = Guid.NewGuid().ToString();
+            string im = "https://posthoststorage.blob.core.windows.net/imagecontainer/" + filename;
+            var user = User.Identity.GetUserName();
+
             toAdd.PostedBy = user;
 
             try
@@ -56,24 +59,28 @@ namespace PostHost.Controllers
                 // Retrieve a reference to a container.
                 CloudBlobContainer container = blobClient.GetContainerReference("imagecontainer");
 
-                string imageName = String.Format("postedhosted-{0}{1}",
-                    Guid.NewGuid().ToString(),
-                    Path.GetExtension(file.FileName));
+                //string imageName = String.Format("postedhosted-{0}{1}",
+                //    Guid.NewGuid().ToString(),
+                //    Path.GetExtension(file.FileName));
 
                 // Create the container if it doesn't already exist.
                 //container.CreateIfNotExists();
                 //container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
 
                 // Retrieve reference to a blob named "myblob".
-                CloudBlockBlob blockBlob = container.GetBlockBlobReference("meowblob");
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(filename);
 
                 // Create or overwrite the "myblob" blob with contents from a local file.
-                blockBlob.Properties.ContentType = file.ContentType;
-                blockBlob.UploadFromStream(file.InputStream);
+                //blockBlob.Properties.ContentType = file.ContentType;
+                //blockBlob.UploadFromStream(file.InputStream);
 
-                string fullpath = String.Format("http://{0}{1}", blockBlob.Uri.DnsSafeHost, blockBlob.Uri.AbsolutePath);
+                //string fullpath = "https://posthoststorage.blob.core.windows.net/imagecontainer/" + imageName;
 
-                toAdd.ImgURL = fullpath;
+                WebRequest req = WebRequest.Create(toAdd.ImgURL);
+                using (Stream stream = req.GetResponse().GetResponseStream())
+                {
+                    blockBlob.UploadFromStream(stream);
+                }
             }
             catch (Exception ex)
             {
@@ -83,9 +90,29 @@ namespace PostHost.Controllers
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
                 phdbec.Contents.Add(toAdd);
-                phdbec.SaveChanges();
+                try
+                {
+                    phdbec.SaveChanges();
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                {
+                    Exception raise = dbEx;
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            string message = string.Format("{0}:{1}",
+                                validationErrors.Entry.Entity.ToString(),
+                                validationError.ErrorMessage);
+                            // raise a new exception nesting
+                            // the current instance as InnerException
+                            raise = new InvalidOperationException(message, raise);
+                        }
+                    }
+                    throw raise;
+                }
             }
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }
