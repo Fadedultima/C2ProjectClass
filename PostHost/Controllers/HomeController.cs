@@ -43,7 +43,8 @@ namespace PostHost.Controllers
         [HttpPost]
         public ActionResult TestAdding( Content toAdd )
         {
-            string im = "https://posthoststorage.blob.core.windows.net/imagecontainer/";
+            string filename = Guid.NewGuid().ToString();
+            string im = "https://posthoststorage.blob.core.windows.net/imagecontainer/" + filename;
             var user = User.Identity.GetUserName();
 
             toAdd.PostedBy = user;
@@ -67,7 +68,7 @@ namespace PostHost.Controllers
                 //container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
 
                 // Retrieve reference to a blob named "myblob".
-                CloudBlockBlob blockBlob = container.GetBlockBlobReference("MEOWwww");
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(filename);
 
                 // Create or overwrite the "myblob" blob with contents from a local file.
                 //blockBlob.Properties.ContentType = file.ContentType;
