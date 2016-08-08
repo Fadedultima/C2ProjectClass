@@ -17,7 +17,10 @@ namespace PostHost.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                return View(phdbec.Contents.ToList());
+            }
         }
 
         public ActionResult About()
@@ -45,10 +48,9 @@ namespace PostHost.Controllers
         {
             string filename = Guid.NewGuid().ToString();
             string im = "https://posthoststorage.blob.core.windows.net/imagecontainer/" + filename;
-            var user = User.Identity.GetUserName();
+            var user = User.Identity.GetUserId();
 
             toAdd.PostedBy = user;
-
             try
             {
                 // Parse the connection string and return a reference to the storage account.
