@@ -10,30 +10,44 @@ using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 using System.Net;
 using System.IO;
+using System.Web.Routing;
 
 namespace PostHost.Controllers
 {
     public class HomeController : Controller
     {
+        static List<Content> Gallerylist;
         public ActionResult Index()
         {
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
-                return View(phdbec.Contents.ToList());
+                Gallerylist = phdbec.Contents.ToList();
+                return View(Gallerylist);
             }
         }
 
-        public ActionResult About()
+        //public actionresult nextpost(int id)
+        //{
+        //    content currentpost = null;
+        //    content nextpost;
+        //    using (posthostdbentities phdbec = new posthostdbentities())
+        //    {
+        //        currentpost = phdbec.contents.find(id);
+        //        int currentpostindex = phdbec.contents.tolist().indexof(currentpost);
+        //        if (currentpostindex == (phdbec.contents.count() - 1))
+        //        {
+        //            nextpost = phdbec.contents.tolist()[currentpostindex + 1];
+        //        }
+        //        else
+        //        {
+        //            nextpost = currentpost;
+        //        }
+        //    }
+        //    return redirecttoaction("viewsingle", new { c_id = nextpost.c_id });
+        //}
+
+        public ActionResult UserProfile()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
@@ -121,6 +135,11 @@ namespace PostHost.Controllers
         public ActionResult ViewSingle(long C_Id)
         {
             ContentViewModels cvm = new ContentViewModels();
+            Boolean shownextbutton;
+            Boolean showprevbutton;
+            Content red = null;
+            Content next = null;
+            Content prev = null;
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
                 cvm.theContent = phdbec.Contents.Find(C_Id);
@@ -132,6 +151,34 @@ namespace PostHost.Controllers
                              select t;
 
                 cvm.theTags = tagids.ToList();
+                var list = phdbec.Contents.ToList();
+                red = phdbec.Contents.Find(C_Id);
+                int curIndex = list.IndexOf(red);
+                if (curIndex == (list.Count() - 1))
+                {
+                    shownextbutton = false;
+                    next = red;
+                }
+                else
+                {
+                    shownextbutton = true;
+                    next = list[curIndex + 1];
+                }
+                if (curIndex == 0)
+                {
+                    prev = red;
+                    showprevbutton = false;
+
+                }
+                else
+                {
+                    prev = list[curIndex - 1];
+                    showprevbutton = true;
+                }
+                TempData["prevId"] = prev.C_Id;
+                TempData["nextId"] = next.C_Id;
+                TempData["shownextbutton"] = shownextbutton;
+                TempData["showprevbutton"] = showprevbutton;
             }
 
             return View(cvm);
