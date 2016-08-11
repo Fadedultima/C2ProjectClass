@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Tag>
+
+@if (Model.Any())
+{
+    foreach (Tag t in Model)
+    {
+        <div>
+            <button>@t.TagTitle</button>
+        </div>
+    }
+}
+else
+{
+    <dib>No Tags</dib>
+}
+

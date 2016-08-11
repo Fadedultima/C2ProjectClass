@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PostHost.Tag>
+
+@foreach (var t in Model)
+{
+    <text>t.TagTitle </text> //make this clickable?
+}
+
+<a data-toggle="modal" data-target="#AddModal">+</a>
+<div>
+    <a data-toggle="modal" data-target="#CreateModal">Create</a>
+</div>
+
+<div id="CreateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Create a tag</h4>
+            </div>
+            <div class="modal-body">
+                stuff
+            </div>
+            <div class="modal-footer">
+                <button>Create Tag</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="AddModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Add a tag
+            </div>
+            <div class="modal-body">
+                stuff
+            </div>
+            <div class="modal-footer">
+                <button>Add Tag</button>
+            </div>
+        </div>
+    </div>
+</div>
