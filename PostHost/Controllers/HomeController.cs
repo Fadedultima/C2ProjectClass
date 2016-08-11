@@ -91,6 +91,7 @@ namespace PostHost.Controllers
 
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
+
                 phdbec.Contents.Add(toAdd);
                 try
                 {
@@ -119,19 +120,38 @@ namespace PostHost.Controllers
 
         public ActionResult ViewSingle(long C_Id)
         {
-            Content red = null;
+            ContentViewModels cvm = new ContentViewModels();
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
-                red = phdbec.Contents.Find(C_Id);
+                cvm.theContent = phdbec.Contents.Find(C_Id);
+
+                var tagids = from t in phdbec.Tags
+                             join tc in phdbec.TagToContents on t.T_Id equals tc.T_Id into tagGroup
+                             from ta in tagGroup
+                             where ta.C_Id == C_Id
+                             select t;
+
+                cvm.theTags = tagids.ToList();
             }
 
-            return View(red);
+            return View(cvm);
         }
 
-
-        public ActionResult Tagger()
+        [ChildActionOnly]
+        public PartialViewResult _AddtagsPV()
         {
-            return View();
+            IEnumerable<Tag> thetags = new List<Tag>();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                thetags = phdbec.Tags.ToList();
+
+            }
+            return PartialView(thetags);
+        }
+        [HttpPost]
+        public void tagCreator(string newtagname)
+        {
+            
         }
     }
 }

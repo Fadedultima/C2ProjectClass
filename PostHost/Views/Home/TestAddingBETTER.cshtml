@@ -1,18 +1,17 @@
-﻿@model PostHost.Content
+﻿@model PostHost.Models.ContentViewModels
 
 @{
-    ViewBag.Title = "TestAddingBETTER";
+    ViewBag.Title = "Upload Content";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>TestAddingBETTER</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Content</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.Hidden("PostedBy")
@@ -25,26 +24,69 @@
         </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ImgURL, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.theContent.ImgURL, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ImgURL, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.theContent.ImgURL, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.theContent.ImgURL, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.theContent.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.theContent.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.theContent.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.theContent.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.theContent.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.theContent.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tags</label>
+            <div class="col-md-10">
+                <a data-toggle="modal" data-target="#AddModal">Add </a>
+                @*<a data-toggle="modal" data-target="#CreateModal">Create</a>*@
+            </div>
+
+            @*<div id="CreateModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Create a tag</h4>
+                        </div>
+                        @using (Html.BeginForm("tagCreator", "Home"))
+                        {
+                            <div class="modal-body">
+                                <input type="text" id="tc" name=""/>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" value="Create Tag" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>*@
+
+            <div id="AddModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            Add a tag
+                        </div>
+                        <div class="modal-body">
+                            @{Html.RenderAction("_AddtagsPV", "Home");}
+                        </div>
+                        <div class="modal-footer">
+                            <button>Add Tag</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

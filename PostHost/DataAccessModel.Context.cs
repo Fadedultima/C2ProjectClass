@@ -26,5 +26,7 @@ namespace PostHost
         }
     
         public virtual DbSet<Content> Contents { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<TagToContent> TagToContents { get; set; }
     }
 }

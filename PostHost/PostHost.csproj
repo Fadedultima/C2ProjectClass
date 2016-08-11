@@ -252,10 +252,17 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ContentViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tag.cs">
+      <DependentUpon>DataAccessModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TagToContent.cs">
+      <DependentUpon>DataAccessModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-PostHost-20160729083644.mdf" />
@@ -343,6 +350,8 @@
     <Content Include="Views\Home\testAdding.cshtml" />
     <Content Include="Views\Home\TestAddingBETTER.cshtml" />
     <Content Include="Views\Home\ViewSingle.cshtml" />
+    <Content Include="Views\Shared\_TagPartial.cshtml" />
+    <Content Include="Views\Shared\_AddTagsPV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

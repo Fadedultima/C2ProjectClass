@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="4d39450bf70a40f9a1374415815bbfc1" Name="Diagram1">
         <EntityTypeShape EntityType="PostHostDBModel.Content" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostHostDBModel.Tag" Width="1.5" PointX="6.75" PointY="0.875" />
+        <EntityTypeShape EntityType="PostHostDBModel.TagToContent" Width="1.5" PointX="3.75" PointY="0.875" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
