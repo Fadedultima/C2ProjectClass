@@ -26,26 +26,6 @@ namespace PostHost.Controllers
             }
         }
 
-        //public actionresult nextpost(int id)
-        //{
-        //    content currentpost = null;
-        //    content nextpost;
-        //    using (posthostdbentities phdbec = new posthostdbentities())
-        //    {
-        //        currentpost = phdbec.contents.find(id);
-        //        int currentpostindex = phdbec.contents.tolist().indexof(currentpost);
-        //        if (currentpostindex == (phdbec.contents.count() - 1))
-        //        {
-        //            nextpost = phdbec.contents.tolist()[currentpostindex + 1];
-        //        }
-        //        else
-        //        {
-        //            nextpost = currentpost;
-        //        }
-        //    }
-        //    return redirecttoaction("viewsingle", new { c_id = nextpost.c_id });
-        //}
-
         public ActionResult UserProfile()
         {
             return View();
@@ -54,17 +34,38 @@ namespace PostHost.Controllers
         [Authorize]
         public ActionResult testAdding()
         {
-            return View("TestAddingBETTER");
+            List<Tag> thetags = new List<Tag>();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                thetags = phdbec.Tags.ToList();
+
+            }
+
+            List<TaggerViewModel> tvm = new List<TaggerViewModel>();
+
+            foreach (Tag t in thetags)
+            {
+                tvm.Add(new TaggerViewModel() { slatedId = t.T_Id, slatedTitle = t.TagTitle });
+            }
+
+            ContentViewModels cvm = new ContentViewModels();
+
+            cvm.theTags = tvm;
+
+            return View("TestAddingBETTER", cvm);
         }
 
         [HttpPost]
-        public ActionResult TestAdding( Content toAdd )
+        public ActionResult TestAdding( ContentViewModels toAddVM )
         {
+            Content toAdd = toAddVM.theContent;
+
             string filename = Guid.NewGuid().ToString();
             string im = "https://posthoststorage.blob.core.windows.net/imagecontainer/" + filename;
             var user = User.Identity.GetUserId();
 
             toAdd.PostedBy = user;
+            toAdd.C_Id = 56;//LongGenerator();
             try
             {
                 // Parse the connection string and return a reference to the storage account.
@@ -107,6 +108,13 @@ namespace PostHost.Controllers
             {
 
                 phdbec.Contents.Add(toAdd);
+                foreach (TaggerViewModel tvm in toAddVM.theTags)
+                {
+                    if (tvm.ischecked)
+                    {
+                        phdbec.TagToContents.Add(new TagToContent { C_Id = toAdd.C_Id, T_Id =  tvm.slatedId});
+                    }
+                }
                 try
                 {
                     phdbec.SaveChanges();
@@ -150,7 +158,15 @@ namespace PostHost.Controllers
                              where ta.C_Id == C_Id
                              select t;
 
-                cvm.theTags = tagids.ToList();
+                List<TaggerViewModel> tvm = new List<TaggerViewModel>();
+
+                foreach(Tag t in tagids)
+                {
+                    tvm.Add(new TaggerViewModel() { slatedId = t.T_Id, slatedTitle = t.TagTitle });
+                }
+
+                cvm.theTags = tvm;
+
                 var list = phdbec.Contents.ToList();
                 red = phdbec.Contents.Find(C_Id);
                 int curIndex = list.IndexOf(red);
@@ -184,21 +200,60 @@ namespace PostHost.Controllers
             return View(cvm);
         }
 
-        [ChildActionOnly]
+        /*[ChildActionOnly]
         public PartialViewResult _AddtagsPV()
         {
-            IEnumerable<Tag> thetags = new List<Tag>();
+            List<Tag> thetags = new List<Tag>();
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
                 thetags = phdbec.Tags.ToList();
 
             }
+
             return PartialView(thetags);
         }
-        [HttpPost]
-        public void tagCreator(string newtagname)
+
+
+        public ActionResult TagManager()
         {
-            
+            IEnumerable<Tag> thetags = new List<Tag>();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                thetags = phdbec.Tags.ToList();
+            }
+            return View(thetags);
+        }*/
+
+        [HttpPost]
+        public ActionResult TagCreator(string newTT)
+        {
+
+            IEnumerable<Tag> thetags = new List<Tag>();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                Tag tagObj = new Tag();
+                tagObj.TagTitle = newTT;
+                phdbec.Tags.Add(tagObj);
+
+                try
+                {
+                    phdbec.SaveChanges();
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                {
+
+                }
+
+                thetags = phdbec.Tags.ToList();
+            }
+            return RedirectToAction("TagManager");//View("TagManager");
+        }
+
+        private long LongGenerator()
+        {
+            byte[] buffer = Guid.NewGuid().ToByteArray();
+
+            return BitConverter.ToInt64(buffer, 0);
         }
     }
 }

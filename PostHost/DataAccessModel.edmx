@@ -4,12 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PostHostDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PostHostDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Content">
           <Key>
             <PropertyRef Name="C_Id" />
           </Key>
-          <Property Name="C_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="C_Id" Type="bigint" Nullable="false" />
           <Property Name="PostedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ImgURL" Type="nvarchar" MaxLength="300" />
           <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
@@ -35,7 +35,8 @@
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagToContent" EntityType="Self.TagToContent" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PostHostDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -43,23 +44,18 @@
           <Key>
             <PropertyRef Name="C_Id" />
           </Key>
-          <Property Name="C_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="C_Id" Type="Int64" Nullable="false" />
           <Property Name="PostedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ImgURL" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="PostHostDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Contents" EntityType="Self.Content" />
-          <EntitySet Name="Tags" EntityType="PostHostDBModel.Tag" />
-          <EntitySet Name="TagToContents" EntityType="PostHostDBModel.TagToContent" />
-        </EntityContainer>
         <EntityType Name="Tag">
           <Key>
             <PropertyRef Name="T_Id" />
           </Key>
           <Property Name="T_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TagTitle" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TagTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="TagToContent">
           <Key>
@@ -69,12 +65,17 @@
           <Property Name="C_Id" Type="Int64" Nullable="false" />
           <Property Name="T_Id" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityContainer Name="PostHostDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Contents" EntityType="Self.Content" />
+          <EntitySet Name="Tags" EntityType="Self.Tag" />
+          <EntitySet Name="TagToContents" EntityType="Self.TagToContent" />
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PostHostDBModelStoreContainer" CdmEntityContainer="PostHostDBEntities">
+        <EntityContainerMapping StorageEntityContainer="PostHostDBModelStoreContainer" CdmEntityContainer="PostHostDBEntities1">
           <EntitySetMapping Name="Contents">
             <EntityTypeMapping TypeName="PostHostDBModel.Content">
               <MappingFragment StoreEntitySet="Content">
@@ -89,16 +90,16 @@
           <EntitySetMapping Name="Tags">
             <EntityTypeMapping TypeName="PostHostDBModel.Tag">
               <MappingFragment StoreEntitySet="Tags">
-                <ScalarProperty Name="TagTitle" ColumnName="TagTitle" />
                 <ScalarProperty Name="T_Id" ColumnName="T_Id" />
+                <ScalarProperty Name="TagTitle" ColumnName="TagTitle" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TagToContents">
             <EntityTypeMapping TypeName="PostHostDBModel.TagToContent">
               <MappingFragment StoreEntitySet="TagToContent">
-                <ScalarProperty Name="T_Id" ColumnName="T_Id" />
                 <ScalarProperty Name="C_Id" ColumnName="C_Id" />
+                <ScalarProperty Name="T_Id" ColumnName="T_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
