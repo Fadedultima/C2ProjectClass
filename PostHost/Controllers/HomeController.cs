@@ -13,18 +13,27 @@ using System.IO;
 using System.Web.Routing;
 
 namespace PostHost.Controllers
-{
+{ 
     public class HomeController : Controller
     {
         static List<Content> Gallerylist;
-        public ActionResult Index()
+        public ActionResult Index(string searchstring = null)
         {
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
-                Gallerylist = phdbec.Contents.ToList();
-                return View(Gallerylist);
+                if (searchstring == null)
+                {
+                    Gallerylist = phdbec.Contents.ToList();
+                    return View(Gallerylist);
+                }
+                else
+                {
+                    Gallerylist = phdbec.Contents.Where(s => s.Title.ToUpper().Contains(searchstring.ToUpper())).ToList();
+                    return View(Gallerylist);
+                }
             }
         }
+
 
         public ActionResult UserProfile()
         {
@@ -167,13 +176,14 @@ namespace PostHost.Controllers
 
                 cvm.theTags = tvm;
 
-                var list = phdbec.Contents.ToList();
+                var list = Gallerylist;
                 red = phdbec.Contents.Find(C_Id);
-                int curIndex = list.IndexOf(red);
+                var currentcontent = Gallerylist.Where( p => p.C_Id == red.C_Id).First();
+                int curIndex = list.IndexOf(currentcontent);
                 if (curIndex == (list.Count() - 1))
                 {
                     shownextbutton = false;
-                    next = red;
+                    next = currentcontent;
                 }
                 else
                 {
@@ -182,7 +192,7 @@ namespace PostHost.Controllers
                 }
                 if (curIndex == 0)
                 {
-                    prev = red;
+                    prev = currentcontent;
                     showprevbutton = false;
 
                 }

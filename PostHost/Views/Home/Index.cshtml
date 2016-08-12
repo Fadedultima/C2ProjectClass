@@ -3,6 +3,11 @@
     ViewBag.Title = "Home Page";
 }
 
+@using (Html.BeginForm("Index", "Home"))
+{ 
+    @Html.TextBox("SearchString")
+    <input type="submit" value="Filter" />
+}
 <div id="gallery">
     @foreach (var m in Model)
     {
