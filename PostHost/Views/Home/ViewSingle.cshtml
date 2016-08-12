@@ -11,7 +11,7 @@
 
 <div class="post-view">
     <div class="post-header">
-        <h2 class="post-title">@Model.Title</h2>
+        <h2 class="post-title">@Model.theContent.Title</h2>
         @if (tempprevbut.Equals(true))
         {
             @Html.ActionLink("Previous Post", "ViewSingle", "Home", new { C_Id = tempprev }, new { @class = "btn btn-primary" });
@@ -30,10 +30,10 @@
         }
     </div>
     <div>
-        <img class="singleview-image" src="@Url.Content(Model.ImgURL)" />
+        <img class="singleview-image" src="@Url.Content(Model.theContent.ImgURL)" />
     </div>
     <div class="post-bottom">
-        <p class="post-description">@Model.Description</p>
+        <p class="post-description">@Model.theContent.Description</p>
     </div>
 </div>
 
