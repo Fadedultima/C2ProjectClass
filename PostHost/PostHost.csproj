@@ -352,7 +352,6 @@
     <Content Include="Views\Home\TestAddingBETTER.cshtml" />
     <Content Include="Views\Home\ViewSingle.cshtml" />
     <Content Include="Views\Shared\_TagPartial.cshtml" />
-    <Content Include="Views\Shared\_AddTagsPV.cshtml" />
     <Content Include="Views\Shared\_FavoritesPartialView.cshtml" />
     <Content Include="Views\Shared\_PostsPartialView.cshtml" />
     <Content Include="Views\Shared\_ProfilePartialView.cshtml" />

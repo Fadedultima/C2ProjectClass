@@ -1,0 +1,30 @@
+﻿@model IEnumerable<PostHost.Tag>
+
+@{
+    ViewBag.Title = "TagManager";
+}
+
+<h2>Tags</h2>
+
+@using (Html.BeginForm("TagCreator", "Home", FormMethod.Post))
+{
+    <input type="text" id="tt" name="newTT" value="" />
+    <input type="submit" value="Create" />
+}
+<br />
+
+@if (Model.Any())
+{
+
+    foreach (Tag t in Model)
+    {
+        
+        <button> @t.TagTitle </button>
+        
+    }
+}
+else
+{
+    <div>No Tags</div>
+}
+

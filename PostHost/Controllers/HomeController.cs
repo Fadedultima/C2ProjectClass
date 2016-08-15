@@ -34,7 +34,6 @@ namespace PostHost.Controllers
             }
         }
 
-
         public ActionResult UserProfile()
         {
             return View();
@@ -209,20 +208,6 @@ namespace PostHost.Controllers
 
             return View(cvm);
         }
-
-        /*[ChildActionOnly]
-        public PartialViewResult _AddtagsPV()
-        {
-            List<Tag> thetags = new List<Tag>();
-            using (PostHostDBEntities phdbec = new PostHostDBEntities())
-            {
-                thetags = phdbec.Tags.ToList();
-
-            }
-
-            return PartialView(thetags);
-        }*/
-
 
         public ActionResult TagManager()
         {
