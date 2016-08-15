@@ -74,7 +74,7 @@ namespace PostHost.Controllers
             var user = User.Identity.GetUserId();
 
             toAdd.PostedBy = user;
-            toAdd.C_Id = 56;//LongGenerator();
+            toAdd.C_Id = LongGenerator();
             try
             {
                 // Parse the connection string and return a reference to the storage account.
@@ -221,7 +221,7 @@ namespace PostHost.Controllers
             }
 
             return PartialView(thetags);
-        }
+        }*/
 
 
         public ActionResult TagManager()
@@ -232,7 +232,7 @@ namespace PostHost.Controllers
                 thetags = phdbec.Tags.ToList();
             }
             return View(thetags);
-        }*/
+        }
 
         [HttpPost]
         public ActionResult TagCreator(string newTT)
