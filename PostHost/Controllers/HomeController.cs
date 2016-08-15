@@ -105,6 +105,7 @@ namespace PostHost.Controllers
                 using (Stream stream = req.GetResponse().GetResponseStream())
                 {
                     blockBlob.UploadFromStream(stream);
+                    toAdd.ImgURL = im;
                 }
             }
             catch (Exception ex)

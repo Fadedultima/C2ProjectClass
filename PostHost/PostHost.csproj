@@ -255,7 +255,6 @@
     <Compile Include="Models\ContentViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\TaggerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tag.cs">
@@ -356,7 +355,6 @@
     <Content Include="Views\Shared\_PostsPartialView.cshtml" />
     <Content Include="Views\Shared\_ProfilePartialView.cshtml" />
     <Content Include="Views\Home\UserProfile.cshtml" />
-    <Content Include="Views\Home\TagManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
