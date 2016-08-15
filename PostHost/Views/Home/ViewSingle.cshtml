@@ -35,5 +35,11 @@
     <div class="post-bottom">
         <p class="post-description">@Model.theContent.Description</p>
     </div>
+    <div>
+        @foreach(var x in Model.theTags)
+        {
+            <button>@x.slatedTitle </button>
+        }
+    </div>
 </div>
 

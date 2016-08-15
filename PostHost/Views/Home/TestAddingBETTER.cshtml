@@ -50,45 +50,18 @@
         @*<div class="form-group">
             <label class="control-label col-md-2">Tags</label>
             <div class="col-md-10">
-                <a data-toggle="modal" data-target="#AddModal">Add </a>
-                @*<a data-toggle="modal" data-target="#CreateModal">Create</a>*@
+
+                @for (int i =0; i < Model.theTags.Count; i++)
+                {
+                    @Html.CheckBoxFor(m => m.theTags[i].ischecked) 
+                    @Html.HiddenFor(m => m.theTags[i].slatedTitle)
+                    @Html.HiddenFor(m => m.theTags[i].slatedId)
+                    @Html.DisplayFor(m => m.theTags[i].slatedTitle) 
+                }
+                
             @*</div>*@
 
-            @*<div id="CreateModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4>Create a tag</h4>
-                        </div>
-                        @using (Html.BeginForm("tagCreator", "Home"))
-                        {
-                            <div class="modal-body">
-                                <input type="text" id="tc" name=""/>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="submit" value="Create Tag" />
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>*@
-
-            @*<div id="AddModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            Add a tag
-                        </div>
-                        <div class="modal-body">
-                            @{Html.RenderAction("_AddtagsPV", "Home");}
-                        </div>
-                        <div class="modal-footer">
-                            <button>Add Tag</button>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-        @*</div>*@
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
