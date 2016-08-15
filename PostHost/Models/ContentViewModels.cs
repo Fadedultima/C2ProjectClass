@@ -8,7 +8,7 @@ namespace PostHost.Models
     public class ContentViewModels
     {
         public Content theContent { get; set; }
-        public List<Tag> theTags = new List<Tag>();
+        //public List<Tag> theTags = new List<Tag>();
 
     }
 }

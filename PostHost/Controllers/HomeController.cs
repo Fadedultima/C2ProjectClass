@@ -85,6 +85,7 @@ namespace PostHost.Controllers
                 using (Stream stream = req.GetResponse().GetResponseStream())
                 {
                     blockBlob.UploadFromStream(stream);
+                    toAdd.ImgURL = im;
                 }
             }
             catch (Exception ex)
@@ -139,7 +140,7 @@ namespace PostHost.Controllers
                              where ta.C_Id == C_Id
                              select t;
 
-                cvm.theTags = tagids.ToList();
+                //cvm.theTags = tagids.ToList();
                 var list = Gallerylist;
                 red = phdbec.Contents.Find(C_Id);
                 var currentcontent = Gallerylist.Where( p => p.C_Id == red.C_Id).First();
