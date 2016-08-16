@@ -19,5 +19,7 @@ namespace PostHost
         public string ImgURL { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public Nullable<long> Likes { get; set; }
+        public Nullable<long> Dislikes { get; set; }
     }
 }
