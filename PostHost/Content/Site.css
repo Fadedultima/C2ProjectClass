@@ -1,8 +1,61 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background: #1E1D1C;
 }
 
+h1,h2,h3,h4,h5,h6,p,label{
+    color: white;
+}
+
+#gallery{
+ margin-left: auto;
+ margin-right: auto;
+ position: center;
+ max-width: 970px;
+ min-width: 750px;
+ padding: 20px;
+}
+
+.galleryimage{
+    height:180px;
+    width:180px;
+    display: inline-block;
+    text-align: center;
+    border-color: #2A2927; 
+}
+
+.post-view{
+    margin-left: auto;
+    margin-right: auto;
+    position: center;
+    width: 1080px;
+    margin-top: 20px;
+}
+
+.post-title{
+    color: white;
+}
+
+.post-description{
+    color: white;
+}
+
+.singleview-image{
+    max-width: 1080px;
+}
+
+.post-header{
+    padding: 5px;
+    background-color: #3B3936;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.post-bottom{
+    background-color: #3B3936;
+    padding: 10px;
+    border-radius: 0px 0px 10px 10px;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;

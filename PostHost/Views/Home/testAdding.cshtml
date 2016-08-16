@@ -4,28 +4,56 @@
 }
 
 <h2>testAdding</h2>
-@using (Html.BeginForm("testAdding", "Home", FormMethod.Post))
+@using (Html.BeginForm("TestAdding", "Home"))
 {
-    <div class="form-group">
-        @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Content</h4>
+        <hr />
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        @*<div class="form-group">
+            <label for="file">Upload Image:</label>
+            <input type="file" name="file" id="file" style="width: 100%;" />
+        </div>*@
+
+        <div class="form-group">
+            @{ Html.EnableClientValidation(false); }
+            @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2", value="MEOW" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PostedBy, new Dictionary<string, object> { { "data-val", false }, { "class", "form-controll" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @{ Html.EnableClientValidation(false); }
+            @Html.LabelFor(model => model.ImgURL, htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ImgURL, new Dictionary<string, object> { { "data-val", false }, {"class", "form-controll" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
         </div>
     </div>
-    
-    <div class="form-group">
-        @Html.LabelFor(m => m.ImgURL, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.ImgURL, new { @class = "form-control" })
-        </div>
-    </div>
-    
-    <div class="form-group">
-        @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
-        </div>
-    </div>
-    
-    <input type="submit" value="testAdding" />
 }
