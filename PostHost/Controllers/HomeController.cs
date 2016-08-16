@@ -15,6 +15,18 @@ namespace PostHost.Controllers
             return View();
         }
 
+        public ActionResult UserProfile()
+        {
+            if (Request.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login","Account");
+            }
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
