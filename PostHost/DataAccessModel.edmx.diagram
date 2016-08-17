@@ -4,10 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="41bd0eefd8424654bea4a0713fde9a58" Name="Diagram1">
-        <EntityTypeShape EntityType="PostHostDBModel.Content" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PostHostDBModel.Tag" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PostHostDBModel.TagToContent" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+      <Diagram DiagramId="742bb2c3c3404ed1b2d559092e496852" Name="Diagram1">
+        <EntityTypeShape EntityType="PostHostDBModel.Comment" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostHostDBModel.Content" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostHostDBModel.Tag" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PostHostDBModel.TagToContent" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

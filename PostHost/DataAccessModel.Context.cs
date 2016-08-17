@@ -25,6 +25,7 @@ namespace PostHost
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Content> Contents { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<TagToContent> TagToContents { get; set; }

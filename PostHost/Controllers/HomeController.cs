@@ -238,7 +238,7 @@ namespace PostHost.Controllers
                 }
                 catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
                 {
-
+                    System.Console.Write(dbEx);
                 }
 
                 thetags = phdbec.Tags.ToList();

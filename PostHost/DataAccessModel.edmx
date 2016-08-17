@@ -4,7 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PostHostDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PostHostDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Comment_Id" />
+          </Key>
+          <Property Name="Comment_Id" Type="int" Nullable="false" />
+          <Property Name="Content_Id" Type="bigint" Nullable="false" />
+          <Property Name="User_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="User_Comment" Type="varchar" MaxLength="140" Nullable="false" />
+        </EntityType>
         <EntityType Name="Content">
           <Key>
             <PropertyRef Name="C_Id" />
@@ -14,8 +23,8 @@
           <Property Name="ImgURL" Type="nvarchar" MaxLength="300" />
           <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="400" />
-          <Property Name="Likes" Type="bigint" />
-          <Property Name="Dislikes" Type="bigint" />
+          <Property Name="Likes" Type="int" Nullable="false" />
+          <Property Name="Dislikes" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Tags">
           <Key>
@@ -33,14 +42,25 @@
           <Property Name="T_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="PostHostDBModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagToContent" EntityType="Self.TagToContent" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PostHostDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Comment_Id" />
+          </Key>
+          <Property Name="Comment_Id" Type="Int32" Nullable="false" />
+          <Property Name="Content_Id" Type="Int64" Nullable="false" />
+          <Property Name="User_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="User_Comment" Type="String" MaxLength="140" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
         <EntityType Name="Content">
           <Key>
             <PropertyRef Name="C_Id" />
@@ -50,8 +70,8 @@
           <Property Name="ImgURL" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
-          <Property Name="Likes" Type="Int64" />
-          <Property Name="Dislikes" Type="Int64" />
+          <Property Name="Likes" Type="Int32" Nullable="false" />
+          <Property Name="Dislikes" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -68,7 +88,8 @@
           <Property Name="C_Id" Type="Int64" Nullable="false" />
           <Property Name="T_Id" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="PostHostDBEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="PostHostDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
           <EntitySet Name="Contents" EntityType="Self.Content" />
           <EntitySet Name="Tags" EntityType="Self.Tag" />
           <EntitySet Name="TagToContents" EntityType="Self.TagToContent" />
@@ -78,17 +99,27 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PostHostDBModelStoreContainer" CdmEntityContainer="PostHostDBEntities1">
+        <EntityContainerMapping StorageEntityContainer="PostHostDBModelStoreContainer" CdmEntityContainer="PostHostDBEntities">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="PostHostDBModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="Comment_Id" ColumnName="Comment_Id" />
+                <ScalarProperty Name="Content_Id" ColumnName="Content_Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Contents">
             <EntityTypeMapping TypeName="PostHostDBModel.Content">
               <MappingFragment StoreEntitySet="Content">
-                <ScalarProperty Name="Dislikes" ColumnName="Dislikes" />
-                <ScalarProperty Name="Likes" ColumnName="Likes" />
                 <ScalarProperty Name="C_Id" ColumnName="C_Id" />
                 <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
                 <ScalarProperty Name="ImgURL" ColumnName="ImgURL" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Likes" ColumnName="Likes" />
+                <ScalarProperty Name="Dislikes" ColumnName="Dislikes" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

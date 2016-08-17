@@ -12,14 +12,11 @@ namespace PostHost
     using System;
     using System.Collections.Generic;
     
-    public partial class Content
+    public partial class Comment
     {
-        public long C_Id { get; set; }
-        public string PostedBy { get; set; }
-        public string ImgURL { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int Likes { get; set; }
-        public int Dislikes { get; set; }
+        public int Comment_Id { get; set; }
+        public long Content_Id { get; set; }
+        public string User_Id { get; set; }
+        public string User_Comment { get; set; }
     }
 }
