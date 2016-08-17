@@ -227,29 +227,29 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Comment.cs">
-      <DependentUpon>DataAccessModel.tt</DependentUpon>
+      <DependentUpon>DataAcessModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Content.cs">
-      <DependentUpon>DataAccessModel.tt</DependentUpon>
+      <DependentUpon>DataAcessModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\IDataAccessLayer.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="DataAccessModel.Context.cs">
+    <Compile Include="DataAcessModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataAccessModel.Context.tt</DependentUpon>
+      <DependentUpon>DataAcessModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccessModel.cs">
+    <Compile Include="DataAcessModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataAccessModel.tt</DependentUpon>
+      <DependentUpon>DataAcessModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccessModel.Designer.cs">
+    <Compile Include="DataAcessModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataAccessModel.edmx</DependentUpon>
+      <DependentUpon>DataAcessModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -262,10 +262,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tag.cs">
-      <DependentUpon>DataAccessModel.tt</DependentUpon>
+      <DependentUpon>DataAcessModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TagToContent.cs">
-      <DependentUpon>DataAccessModel.tt</DependentUpon>
+      <DependentUpon>DataAcessModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -275,15 +275,15 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="DataAccessModel.Context.tt">
+    <Content Include="DataAcessModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataAccessModel.edmx</DependentUpon>
-      <LastGenOutput>DataAccessModel.Context.cs</LastGenOutput>
+      <DependentUpon>DataAcessModel.edmx</DependentUpon>
+      <LastGenOutput>DataAcessModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DataAccessModel.tt">
+    <Content Include="DataAcessModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataAccessModel.edmx</DependentUpon>
-      <LastGenOutput>DataAccessModel.cs</LastGenOutput>
+      <DependentUpon>DataAcessModel.edmx</DependentUpon>
+      <LastGenOutput>DataAcessModel.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -296,12 +296,12 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="DataAccessModel.edmx">
+    <EntityDeploy Include="DataAcessModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DataAccessModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataAcessModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="DataAccessModel.edmx.diagram">
-      <DependentUpon>DataAccessModel.edmx</DependentUpon>
+    <Content Include="DataAcessModel.edmx.diagram">
+      <DependentUpon>DataAcessModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

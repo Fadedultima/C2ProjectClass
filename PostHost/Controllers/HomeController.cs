@@ -11,6 +11,8 @@ using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 using System.Net;
 using System.IO;
 using System.Web.Routing;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace PostHost.Controllers
 { 
@@ -38,6 +40,38 @@ namespace PostHost.Controllers
         public ActionResult UserProfile()
         {
             return View();
+        }
+
+        //CODE FOR CREATING A COMMENT - ALEX
+        [Authorize]
+        public ActionResult CommentCreator(string comment, int C_id)
+        {
+            Comment comm = new Comment();
+            comm.Comment_Id = (int)LongGenerator();
+            comm.User_Comment = comment;
+            comm.Content_Id = C_id;
+            comm.Posted_Username = User.Identity.GetUserName();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                phdbec.Comments.Add(comm);
+                try
+                {
+                    phdbec.SaveChanges();
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}",
+                                                    validationError.PropertyName,
+                                                    validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
 
         [Authorize]
@@ -161,6 +195,8 @@ namespace PostHost.Controllers
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
                 cvm.theContent = phdbec.Contents.Find(C_Id);
+
+                cvm.theComments = phdbec.Comments.Where(c => c.Content_Id == C_Id).ToList();
 
                 var tagids = from t in phdbec.Tags
                              join tc in phdbec.TagToContents on t.T_Id equals tc.T_Id into tagGroup

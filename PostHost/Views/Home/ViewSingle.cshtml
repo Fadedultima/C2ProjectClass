@@ -43,5 +43,29 @@
             <button>@x.slatedTitle </button>
         }
     </div>
+    @if (Request.IsAuthenticated) {
+        <div class="commentcreation">
+            @using (Html.BeginForm("CommentCreator", "Home", new { C_Id = Model.theContent.C_Id })) {
+            @Html.TextArea("comment");
+            <input class="btn btn-success" type="submit" value="Add Comment" />
+            }
+        </div>
+            }
+    else
+    {
+        <div class="well-sm">
+            <h4>You must be logged in to leave a comment</h4>
+        </div>
+    }
+    <div class="showcomments">
+        @foreach (var c in Model.theComments)
+        {
+            <div class="well-sm">
+                <h6> Posted by: @c.Posted_Username</h6>
+                <br />
+                <p>@c.User_Comment</p>
+            </div>
+        }
+    </div>
 </div>
 

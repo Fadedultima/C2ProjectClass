@@ -11,7 +11,7 @@
           </Key>
           <Property Name="Comment_Id" Type="int" Nullable="false" />
           <Property Name="Content_Id" Type="bigint" Nullable="false" />
-          <Property Name="User_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Posted_Username" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="User_Comment" Type="varchar" MaxLength="140" Nullable="false" />
         </EntityType>
         <EntityType Name="Content">
@@ -58,7 +58,7 @@
           </Key>
           <Property Name="Comment_Id" Type="Int32" Nullable="false" />
           <Property Name="Content_Id" Type="Int64" Nullable="false" />
-          <Property Name="User_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Posted_Username" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="User_Comment" Type="String" MaxLength="140" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="Content">
@@ -105,7 +105,7 @@
               <MappingFragment StoreEntitySet="Comment">
                 <ScalarProperty Name="Comment_Id" ColumnName="Comment_Id" />
                 <ScalarProperty Name="Content_Id" ColumnName="Content_Id" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Posted_Username" ColumnName="Posted_Username" />
                 <ScalarProperty Name="User_Comment" ColumnName="User_Comment" />
               </MappingFragment>
             </EntityTypeMapping>

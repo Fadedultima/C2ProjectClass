@@ -16,7 +16,7 @@ namespace PostHost
     {
         public int Comment_Id { get; set; }
         public long Content_Id { get; set; }
-        public string User_Id { get; set; }
+        public string Posted_Username { get; set; }
         public string User_Comment { get; set; }
     }
 }
