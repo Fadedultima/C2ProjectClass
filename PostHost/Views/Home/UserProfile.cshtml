@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<PostHost.Content>
 @{
     ViewBag.Title = "UserProfile";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -22,7 +22,7 @@
     </div>
     <div id="myposts" class="tab-pane fade">
         <h3>Posts</h3>
-        @Html.Partial("_PostsPartialView");
+        @Html.Partial("_PostsPartialView", Model);
     </div>
 </div>
 

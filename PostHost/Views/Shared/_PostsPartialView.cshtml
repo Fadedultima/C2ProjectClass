@@ -1,2 +1,18 @@
 ﻿
 <h1>Profile Posts from the partial view</h1>
+
+<div id="gallery">
+    @if (Model == null)
+    {
+        <h3>You have no posts</h3>
+    }
+    else
+    {
+        foreach (var m in Model)
+        {
+            <a href="@Url.Action("ViewSingle", "Home", new { m.C_Id })">
+                <img class="thumbnail galleryimage" src="@Url.Content(m.ImgURL)" />
+            </a>
+        }
+    }
+</div>

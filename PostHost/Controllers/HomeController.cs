@@ -39,7 +39,12 @@ namespace PostHost.Controllers
 
         public ActionResult UserProfile()
         {
-            return View();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                string user = User.Identity.GetUserId();
+                List<Content> userposts = phdbec.Contents.Where(n => n.PostedBy == user).ToList();
+            }
+                return View();
         }
 
         //CODE FOR CREATING A COMMENT - ALEX
