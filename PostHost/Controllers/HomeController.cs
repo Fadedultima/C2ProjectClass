@@ -20,7 +20,7 @@ namespace PostHost.Controllers
     public class HomeController : Controller
     {
         static List<Content> Gallerylist;
-        public ActionResult Index(string searchstring = null)
+        public ActionResult Index(string searchtype, string searchstring = null)
         {
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
@@ -31,8 +31,24 @@ namespace PostHost.Controllers
                 }
                 else
                 {
-                    Gallerylist = phdbec.Contents.Where(s => s.Title.ToUpper().Contains(searchstring.ToUpper())).ToList();
-                    return View(Gallerylist);
+                    if (searchtype == "Title")
+                    {
+                        Gallerylist = phdbec.Contents.Where(s => s.Title.ToUpper().Contains(searchstring.ToUpper())).ToList();
+                        return View(Gallerylist);
+                    }
+                    else
+                    {
+                        List<Content> unicon = phdbec.Contents.ToList();
+                        Tag t = phdbec.Tags.Where(s => s.TagTitle.ToUpper().Contains(searchstring.ToUpper())).First();
+                        var ttc = phdbec.TagToContents.Where(p => p.T_Id == t.T_Id);
+                        var glist = from c in phdbec.Contents
+                                    join tc in ttc on c.C_Id equals tc.C_Id into newlist
+                                    from nl in newlist
+                                    where nl.C_Id == c.C_Id
+                                    select c;
+                        Gallerylist = glist.ToList();
+                        return View(Gallerylist);
+                    }
                 }
             }
         }
