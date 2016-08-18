@@ -9,7 +9,7 @@ namespace PostHost.Models
     {
         public Content theContent { get; set; }
         public List<TaggerViewModel> theTags { get; set; }
-
+        public List<Comment> theComments { get; set; }
     }
 
     public class LikeViewModels

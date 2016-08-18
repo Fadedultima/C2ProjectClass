@@ -5,7 +5,12 @@
 
 @using (Html.BeginForm("Index", "Home"))
 { 
-    @Html.TextBox("SearchString")
+    @Html.TextBox("searchstring")
+    <p>Search By: </p>
+    <select name="searchtype">
+        <option value="Title">Title</option>
+        <option value="Tag">Tag</option>
+    </select>
     <input type="submit" value="Filter" />
 }
 <div id="gallery">

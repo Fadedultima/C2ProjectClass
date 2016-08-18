@@ -11,6 +11,8 @@ using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 using System.Net;
 using System.IO;
 using System.Web.Routing;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace PostHost.Controllers
 { 
@@ -18,7 +20,7 @@ namespace PostHost.Controllers
     public class HomeController : Controller
     {
         static List<Content> Gallerylist;
-        public ActionResult Index(string searchstring = null)
+        public ActionResult Index(string searchtype, string searchstring = null)
         {
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
@@ -29,15 +31,68 @@ namespace PostHost.Controllers
                 }
                 else
                 {
-                    Gallerylist = phdbec.Contents.Where(s => s.Title.ToUpper().Contains(searchstring.ToUpper())).ToList();
-                    return View(Gallerylist);
+                    if (searchtype == "Title")
+                    {
+                        Gallerylist = phdbec.Contents.Where(s => s.Title.ToUpper().Contains(searchstring.ToUpper())).ToList();
+                        return View(Gallerylist);
+                    }
+                    else
+                    {
+                        List<Content> unicon = phdbec.Contents.ToList();
+                        Tag t = phdbec.Tags.Where(s => s.TagTitle.ToUpper().Contains(searchstring.ToUpper())).First();
+                        var ttc = phdbec.TagToContents.Where(p => p.T_Id == t.T_Id);
+                        var glist = from c in phdbec.Contents
+                                    join tc in ttc on c.C_Id equals tc.C_Id into newlist
+                                    from nl in newlist
+                                    where nl.C_Id == c.C_Id
+                                    select c;
+                        Gallerylist = glist.ToList();
+                        return View(Gallerylist);
+                    }
                 }
             }
         }
 
         public ActionResult UserProfile()
         {
-            return View();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                string user = User.Identity.GetUserId();
+                List<Content> userposts = phdbec.Contents.Where(n => n.PostedBy == user).ToList();
+            }
+                return View();
+        }
+
+        //CODE FOR CREATING A COMMENT - ALEX
+        [Authorize]
+        public ActionResult CommentCreator(string comment, int C_id)
+        {
+            Comment comm = new Comment();
+            comm.Comment_Id = (int)LongGenerator();
+            comm.User_Comment = comment;
+            comm.Content_Id = C_id;
+            comm.Posted_Username = User.Identity.GetUserName();
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                phdbec.Comments.Add(comm);
+                try
+                {
+                    phdbec.SaveChanges();
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}",
+                                                    validationError.PropertyName,
+                                                    validationError.ErrorMessage);
+                        }
+                    }
+                }
+            }
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
         }
 
         [Authorize]
@@ -166,6 +221,8 @@ namespace PostHost.Controllers
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
                 cvm.theContent = phdbec.Contents.Find(C_Id);
+
+                cvm.theComments = phdbec.Comments.Where(c => c.Content_Id == C_Id).ToList();
 
                 var tagids = from t in phdbec.Tags
                              join tc in phdbec.TagToContents on t.T_Id equals tc.T_Id into tagGroup
