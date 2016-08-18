@@ -1,0 +1,13 @@
+﻿@model PostHost.Models.LikeViewModels
+
+<div>
+    <span>
+        @Model.theLikes
+        <button value="1">Like</button>
+    </span>
+    <span> / </span>
+    <span>
+        @Model.theDislikes
+        <button value="-1">Dislike</button>
+    </span>
+</div>

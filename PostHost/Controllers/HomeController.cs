@@ -65,7 +65,7 @@ namespace PostHost.Controllers
         }
 
         [HttpPost]
-        public ActionResult TestAdding( ContentViewModels toAddVM )
+        public ActionResult TestAdding( ContentViewModels toAddVM, HttpPostedFileBase file )
         {
             Content toAdd = toAddVM.theContent;
 
@@ -75,6 +75,7 @@ namespace PostHost.Controllers
 
             toAdd.PostedBy = user;
             toAdd.C_Id = LongGenerator();
+
             try
             {
                 // Parse the connection string and return a reference to the storage account.
@@ -102,12 +103,16 @@ namespace PostHost.Controllers
 
                 //string fullpath = "https://posthoststorage.blob.core.windows.net/imagecontainer/" + imageName;
 
-                WebRequest req = WebRequest.Create(toAdd.ImgURL);
+
+
+                blockBlob.UploadFromStream(file.InputStream);
+                toAdd.ImgURL = im;
+                /*WebRequest req = WebRequest.Create(toAdd.ImgURL);
                 using (Stream stream = req.GetResponse().GetResponseStream())
                 {
                     blockBlob.UploadFromStream(stream);
                     toAdd.ImgURL = im;
-                }
+                }*/
             }
             catch (Exception ex)
             {

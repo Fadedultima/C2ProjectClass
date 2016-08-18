@@ -1,4 +1,4 @@
-﻿@model PostHost.Content
+﻿@model PostHost.Models.ContentViewModels
 
 @{ 
     ViewBag.Title = "Upload Content";
@@ -7,7 +7,7 @@
 
 <h2>TestAddingBETTER</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(ViewContext.RouteData.GetRequiredString("action"), "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -24,30 +24,35 @@
         </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ImgURL, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.theContent.ImgURL, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ImgURL, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ImgURL, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.theContent.ImgURL, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.theContent.ImgURL, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="file">Upload Image:</label>
+            <input type="file" name="file" id="file" style="width: 100%;" />
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.theContent.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.theContent.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.theContent.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.theContent.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.theContent.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.theContent.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @*<div class="form-group">
+        <div class="form-group">
             <label class="control-label col-md-2">Tags</label>
             <div class="col-md-10">
 
@@ -61,7 +66,7 @@
                 
             </div>
 
-        </div>*@
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

@@ -11,4 +11,10 @@ namespace PostHost.Models
         public List<TaggerViewModel> theTags { get; set; }
 
     }
+
+    public class LikeViewModels
+    {
+        public int theLikes { get; set; }
+        public int theDislikes { get; set; }
+    }
 }
