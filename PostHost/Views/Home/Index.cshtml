@@ -16,9 +16,9 @@
 <div id="gallery">
     @foreach (var m in Model)
     {
-        <a href="@Url.Action("ViewSingle", "Home", new { m.C_Id })">
-            <img class="thumbnail galleryimage" src="@Url.Content(m.ImgURL)" />
-        </a>
+            <a href="@Url.Action("ViewSingle", "Home", new { m.C_Id })">
+                <img class="thumbnail galleryimage" src="@Url.Content(m.ImgURL)"/>
+            </a>
     }
     <img class="thumbnail galleryimage" src="http://www.ucreative.com/wp-content/uploads/2014/11/Landscape-Photography-Banner1.jpg" />
     <img class="thumbnail galleryimage" src="http://www.ucreative.com/wp-content/uploads/2014/11/Landscape-Photography-Banner1.jpg" />

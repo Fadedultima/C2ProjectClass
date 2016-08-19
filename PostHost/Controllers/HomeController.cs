@@ -59,13 +59,13 @@ namespace PostHost.Controllers
             {
                 string user = User.Identity.GetUserId();
                 List<Content> userposts = phdbec.Contents.Where(n => n.PostedBy == user).ToList();
+                return View(userposts);
             }
-                return View();
         }
 
         //CODE FOR CREATING A COMMENT - ALEX
         [Authorize]
-        public ActionResult CommentCreator(string comment, int C_id)
+        public ActionResult CommentCreator(string comment, long C_id)
         {
             Comment comm = new Comment();
             comm.Comment_Id = (int)LongGenerator();
