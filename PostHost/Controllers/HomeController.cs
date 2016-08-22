@@ -308,6 +308,31 @@ namespace PostHost.Controllers
             return RedirectToAction("TagManager");//View("TagManager");
         }
 
+        public ActionResult likeModifier(int value, long toMod)
+        {
+            LikeViewModels lvm = new LikeViewModels();
+
+            using(PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                Content toUpdate = phdbec.Contents.Where(x => x.C_Id == toMod).First();
+                if (value == 1)
+                {
+                    toUpdate.Likes++;
+                }
+                else if (value == -1)
+                {
+                    toUpdate.Dislikes++;
+                }
+                phdbec.SaveChanges();
+
+                lvm.contentId = toMod;
+                lvm.theLikes = toUpdate.Likes;
+                lvm.theDislikes = toUpdate.Dislikes;
+            }
+            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+            //return PartialView("_LikePartialView", lvm);
+        }
+
         private long LongGenerator()
         {
             byte[] buffer = Guid.NewGuid().ToByteArray();

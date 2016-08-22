@@ -1,0 +1,16 @@
+﻿@model PostHost.Models.LikeViewModels
+
+<div class="likeselector">
+    <span>
+        @Model.theLikes
+        @Html.ActionLink("Like", "likeModifier", new { value = 1, toMod = Model.contentId }, new { @class ="btn btn-success likebut"})
+    </span>
+    <span>
+        @Model.theDislikes
+        @Html.ActionLink("Dislike", "likeModifier", new { value = -1, toMod = Model.contentId }, new { @class = "btn btn-danger dislikebut" })
+    </span>
+</div>
+
+<script type="text/javascript">
+    
+</script>

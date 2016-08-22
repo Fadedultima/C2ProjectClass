@@ -14,6 +14,7 @@ namespace PostHost.Models
 
     public class LikeViewModels
     {
+        public long contentId { get; set; }
         public int theLikes { get; set; }
         public int theDislikes { get; set; }
     }

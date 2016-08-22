@@ -359,7 +359,7 @@
     <Content Include="Views\Shared\_PostsPartialView.cshtml" />
     <Content Include="Views\Shared\_ProfilePartialView.cshtml" />
     <Content Include="Views\Home\UserProfile.cshtml" />
-    <Content Include="Views\Shared\_LikeViewModel.cshtml" />
+    <Content Include="Views\Shared\_LikePartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

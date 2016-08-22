@@ -1,4 +1,5 @@
-﻿@model PostHost.Models.ContentViewModels
+﻿@using PostHost.Models
+@model ContentViewModels
 
 @{
     ViewBag.Title = "ViewSingle";
@@ -36,8 +37,11 @@
         <p class="post-description">@Model.theContent.Description</p>
 
         @{Html.RenderPartial(
-              "_LikesPartial" 
-              );
+                    "_LikePartialView",
+                    new LikeViewModels { theLikes = Model.theContent.Likes,
+                        theDislikes = Model.theContent.Dislikes,
+                        contentId = Model.theContent.C_Id
+                    });
         }
 
     </div>
