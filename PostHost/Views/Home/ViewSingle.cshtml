@@ -36,13 +36,7 @@
     <div class="post-bottom">
         <p class="post-description">@Model.theContent.Description</p>
 
-        @*@{Html.RenderPartial(
-                    "_LikePartialView",
-                    new LikeViewModels { theLikes = Model.theContent.Likes,
-                        theDislikes = Model.theContent.Dislikes,
-                        contentId = Model.theContent.C_Id
-                    });
-        }*@
+        @{Html.RenderPartial("_LikePartialView", Model.LVM);}
 
     </div>
     <div>

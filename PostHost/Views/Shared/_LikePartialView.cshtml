@@ -3,11 +3,25 @@
 <div class="likeselector">
     <span>
         @Model.theLikes
-        @Html.ActionLink("Like", "likeModifier", new { value = 1, toMod = Model.contentId }, new { @class ="btn btn-success likebut"})
+        @if (Model.hasLiked)
+        {
+            <span> Liked</span>
+        }
+        else
+        {
+            @Html.ActionLink("Like", "likeModifier", new { value = 1, toMod = Model.contentId }, new { @class = "btn btn-success likebut" })
+        }
     </span>
     <span>
         @Model.theDislikes
-        @Html.ActionLink("Dislike", "likeModifier", new { value = -1, toMod = Model.contentId }, new { @class = "btn btn-danger dislikebut" })
+        @if (Model.hasDisliked)
+        {
+            <span> Disliked</span>
+        }
+        else
+        {
+            @Html.ActionLink("Dislike", "likeModifier", new { value = -1, toMod = Model.contentId }, new { @class = "btn btn-danger dislikebut" })
+        }
     </span>
 </div>
 

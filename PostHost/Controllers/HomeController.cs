@@ -222,6 +222,34 @@ namespace PostHost.Controllers
             {
                 cvm.theContent = phdbec.Contents.Find(C_Id);
 
+                LikeViewModels LikeVM = new LikeViewModels();
+                LikeVM.contentId = cvm.theContent.C_Id;
+                LikeVM.theLikes = cvm.theContent.Likes;
+                LikeVM.theDislikes = cvm.theContent.Dislikes;
+
+                string useid = User.Identity.GetUserId();
+
+                if (phdbec.Likes.Any(l => l.UserId == useid && l.ContentId == cvm.theContent.C_Id))
+                {
+                    if (phdbec.Likes.Where(r => r.UserId == useid && r.ContentId == cvm.theContent.C_Id).First().OneOrOther)
+                    {
+                        LikeVM.hasLiked = true;
+                        LikeVM.hasDisliked = false;
+                    }
+                    else
+                    {
+                        LikeVM.hasDisliked = true;
+                        LikeVM.hasLiked = false;
+                    }
+                }
+                else
+                {
+                    LikeVM.hasLiked = false;
+                    LikeVM.hasDisliked = false;
+                }
+
+                cvm.LVM = LikeVM;
+
                 cvm.theComments = phdbec.Comments.Where(c => c.Content_Id == C_Id).ToList();
 
                 var tagids = from t in phdbec.Tags
@@ -307,7 +335,8 @@ namespace PostHost.Controllers
             }
             return RedirectToAction("TagManager");//View("TagManager");
         }
-
+        
+        [Authorize]
         public ActionResult likeModifier(int value, long toMod)
         {
             LikeViewModels lvm = new LikeViewModels();
@@ -317,10 +346,32 @@ namespace PostHost.Controllers
                 Content toUpdate = phdbec.Contents.Where(x => x.C_Id == toMod).First();
                 if (value == 1)
                 {
+                    Like l = new Like() { UserId = User.Identity.GetUserId(), ContentId = toMod, OneOrOther = true };
+                    if (phdbec.Likes.Any(tl => tl.UserId == l.UserId && tl.ContentId == l.ContentId))
+                    {
+                        Like exLike = phdbec.Likes.Where(xl => xl.UserId == l.UserId && xl.ContentId == l.ContentId).First();
+                        exLike.OneOrOther = true;
+                        toUpdate.Dislikes--;
+                    }
+                    else
+                    {
+                        phdbec.Likes.Add(l);
+                    }
                     toUpdate.Likes++;
                 }
                 else if (value == -1)
                 {
+                    Like d = new Like() { UserId = User.Identity.GetUserId(), ContentId = toMod, OneOrOther = false };
+                    if (phdbec.Likes.Any(td => td.UserId == d.UserId && td.ContentId == d.ContentId))
+                    {
+                        Like exDislike = phdbec.Likes.Where(xd => xd.UserId == d.UserId && xd.ContentId == d.ContentId).First();
+                        exDislike.OneOrOther = false;
+                        toUpdate.Likes--;
+                    }
+                    else
+                    {
+                        phdbec.Likes.Add(d);
+                    }
                     toUpdate.Dislikes++;
                 }
                 phdbec.SaveChanges();
