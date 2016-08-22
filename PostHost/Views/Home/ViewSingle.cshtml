@@ -30,25 +30,25 @@
             <button type="button" class="btn btn-primary" disabled>Last Post</button>
         }
     </div>
-    <div>
+    <div class="singleview-image">
         <img class="singleview-image" src="@Url.Content(Model.theContent.ImgURL)" />
     </div>
     <div class="post-bottom">
         <p class="post-description">@Model.theContent.Description</p>
 
-        @{Html.RenderPartial(
+        @*@{Html.RenderPartial(
                     "_LikePartialView",
                     new LikeViewModels { theLikes = Model.theContent.Likes,
                         theDislikes = Model.theContent.Dislikes,
                         contentId = Model.theContent.C_Id
                     });
-        }
+        }*@
 
     </div>
     <div>
-        @foreach(var x in Model.theTags)
+        @foreach (var x in Model.theTags)
         {
-            <button>@x.slatedTitle </button>
+            @Html.ActionLink(x.slatedTitle, "Index", "Home", new { searchtype = x.slatedTitle, searchstring = x.slatedTitle }, new { @class = "btn btn-primary" });
         }
     </div>
     @if (Request.IsAuthenticated) {
@@ -68,7 +68,7 @@
     <div class="showcomments">
         @foreach (var c in Model.theComments)
         {
-            <div class="well-sm">
+            <div class="well-sm comment">
                 <h6> Posted by: @c.Posted_Username</h6>
                 <br />
                 <p>@c.User_Comment</p>

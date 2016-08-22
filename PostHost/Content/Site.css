@@ -4,7 +4,7 @@
     background: #1E1D1C;
 }
 
-h1,h2,h3,h4,h5,h6,p,label{
+h1, h2, h3, h4, h5, h6, p, label {
     color: white;
 }
 
@@ -25,10 +25,20 @@ h1,h2,h3,h4,h5,h6,p,label{
     border-color: #2A2927; 
 }
 
+.galleryimage:hover{
+    border-color:orangered;
+    border-width:3px;
+}
+
+.comment{
+    margin-bottom:5px;
+    background-color:#3B3936;
+    border-radius:5px;
+}
+
 .post-view{
     margin-left: auto;
     margin-right: auto;
-    position: center;
     width: 1080px;
     margin-top: 20px;
 }
@@ -43,6 +53,14 @@ h1,h2,h3,h4,h5,h6,p,label{
 
 .singleview-image{
     max-width: 1080px;
+}
+
+.singleview-imagediv{
+    text-align:center;
+}
+
+.tagchoose{
+    color:white;
 }
 
 .post-header{
