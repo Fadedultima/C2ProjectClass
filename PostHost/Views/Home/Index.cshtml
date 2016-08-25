@@ -14,6 +14,10 @@
     <input type="submit" value="Filter" />
 }
 <div id="gallery">
+    <select name="sorttype" onch>
+        <option value="Popularity">Popularity</option>
+        <option value="Preference">Preference</option>
+    </select>
     @foreach (var m in Model)
     {
             <a href="@Url.Action("ViewSingle", "Home", new { m.C_Id })">

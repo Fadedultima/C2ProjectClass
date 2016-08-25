@@ -26,7 +26,8 @@ namespace PostHost.Controllers
             {
                 if (searchstring == null)
                 {
-                    Gallerylist = phdbec.Contents.ToList();
+                    
+                    Gallerylist = phdbec.Contents.OrderByDescending(c => c.Likes - c.Dislikes).ToList();
                     return View(Gallerylist);
                 }
                 else
@@ -343,38 +344,41 @@ namespace PostHost.Controllers
 
             using(PostHostDBEntities phdbec = new PostHostDBEntities())
             {
+                Like ld = new Like() { UserId = User.Identity.GetUserId(), ContentId = toMod };
                 Content toUpdate = phdbec.Contents.Where(x => x.C_Id == toMod).First();
                 if (value == 1)
                 {
-                    Like l = new Like() { UserId = User.Identity.GetUserId(), ContentId = toMod, OneOrOther = true };
-                    if (phdbec.Likes.Any(tl => tl.UserId == l.UserId && tl.ContentId == l.ContentId))
+                    ld.OneOrOther = true;
+                    if (phdbec.Likes.Any(tl => tl.UserId == ld.UserId && tl.ContentId == ld.ContentId))
                     {
-                        Like exLike = phdbec.Likes.Where(xl => xl.UserId == l.UserId && xl.ContentId == l.ContentId).First();
+                        Like exLike = phdbec.Likes.Where(xl => xl.UserId == ld.UserId && xl.ContentId == ld.ContentId).First();
                         exLike.OneOrOther = true;
                         toUpdate.Dislikes--;
                     }
                     else
                     {
-                        phdbec.Likes.Add(l);
+                        phdbec.Likes.Add(ld);
                     }
                     toUpdate.Likes++;
                 }
                 else if (value == -1)
                 {
-                    Like d = new Like() { UserId = User.Identity.GetUserId(), ContentId = toMod, OneOrOther = false };
-                    if (phdbec.Likes.Any(td => td.UserId == d.UserId && td.ContentId == d.ContentId))
+                    ld.OneOrOther = false;
+                    if (phdbec.Likes.Any(td => td.UserId == ld.UserId && td.ContentId == ld.ContentId))
                     {
-                        Like exDislike = phdbec.Likes.Where(xd => xd.UserId == d.UserId && xd.ContentId == d.ContentId).First();
+                        Like exDislike = phdbec.Likes.Where(xd => xd.UserId == ld.UserId && xd.ContentId == ld.ContentId).First();
                         exDislike.OneOrOther = false;
                         toUpdate.Likes--;
                     }
                     else
                     {
-                        phdbec.Likes.Add(d);
+                        phdbec.Likes.Add(ld);
                     }
                     toUpdate.Dislikes++;
                 }
                 phdbec.SaveChanges();
+
+                PrefModifier(toMod, value);
 
                 lvm.contentId = toMod;
                 lvm.theLikes = toUpdate.Likes;
@@ -382,6 +386,27 @@ namespace PostHost.Controllers
             }
             return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
             //return PartialView("_LikePartialView", lvm);
+        }
+
+        private void PrefModifier(long conId, int LorD)
+        {
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
+            {
+                List<TagToContent> contsTags = phdbec.TagToContents.Where(t => t.C_Id == conId).ToList();
+                foreach (TagToContent ttc in contsTags)
+                {
+                    UserLikeTag ult = new UserLikeTag() { UserId = User.Identity.GetUserId(), TagId = ttc.T_Id, Prefrence = LorD };
+                    if (phdbec.UserLikeTags.Any(u => u.UserId == ult.UserId && u.TagId == ult.TagId))
+                    {
+                        phdbec.UserLikeTags.Where(u => u.UserId == ult.UserId && u.TagId == ult.TagId).First().Prefrence += LorD;
+                    }
+                    else
+                    {
+                        phdbec.UserLikeTags.Add(ult);
+                    }
+                }
+                phdbec.SaveChanges();
+            }
         }
 
         private long LongGenerator()

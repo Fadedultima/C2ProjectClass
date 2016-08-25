@@ -270,6 +270,9 @@
     <Compile Include="TagToContent.cs">
       <DependentUpon>DataAcessModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserLikeTag.cs">
+      <DependentUpon>DataAcessModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-PostHost-20160729083644.mdf" />
