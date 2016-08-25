@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PostHostDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PostHostDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="Comment_Id" />
@@ -26,6 +26,15 @@
           <Property Name="Likes" Type="int" Nullable="false" />
           <Property Name="Dislikes" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Likes">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ContentId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ContentId" Type="bigint" Nullable="false" />
+          <Property Name="OneOrOther" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tags">
           <Key>
             <PropertyRef Name="T_Id" />
@@ -44,11 +53,11 @@
         <EntityContainer Name="PostHostDBModelStoreContainer">
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Likes" EntityType="Self.Likes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagToContent" EntityType="Self.TagToContent" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PostHostDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -93,7 +102,17 @@
           <EntitySet Name="Contents" EntityType="Self.Content" />
           <EntitySet Name="Tags" EntityType="Self.Tag" />
           <EntitySet Name="TagToContents" EntityType="Self.TagToContent" />
+          <EntitySet Name="Likes" EntityType="PostHostDBModel.Like" />
         </EntityContainer>
+        <EntityType Name="Like">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ContentId" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ContentId" Type="Int64" Nullable="false" />
+          <Property Name="OneOrOther" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -136,6 +155,15 @@
               <MappingFragment StoreEntitySet="TagToContent">
                 <ScalarProperty Name="C_Id" ColumnName="C_Id" />
                 <ScalarProperty Name="T_Id" ColumnName="T_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Likes">
+            <EntityTypeMapping TypeName="PostHostDBModel.Like">
+              <MappingFragment StoreEntitySet="Likes">
+                <ScalarProperty Name="OneOrOther" ColumnName="OneOrOther" />
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
