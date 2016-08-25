@@ -15,8 +15,18 @@ namespace PostHost
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}/{C_id}",
+                defaults: new { controller = "Home", action = "Index", C_id = UrlParameter.Optional }
+            );
+            routes.MapRoute(
+                name: "AddComment",
+                url: "{controller}/{action}/{comment}/{id}",
+                defaults: new { controller = "Home", action = "CommentCreator", comment = "", id = "" }
+            );
+            routes.MapRoute(
+                name: "LkeDislike",
+                url: "{controller}/{action}/{value}/{toMod}",
+                defaults: new { controller = "Home", action = "likeModifier", comment = "", id = "" }
             );
         }
     }

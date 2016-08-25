@@ -66,34 +66,52 @@ namespace PostHost.Controllers
 
         //CODE FOR CREATING A COMMENT - ALEX
         [Authorize]
-        public ActionResult CommentCreator(string comment, long C_id)
+        public ActionResult CommentCreator(long id, string comment = null)
         {
-            Comment comm = new Comment();
-            comm.Comment_Id = (int)LongGenerator();
-            comm.User_Comment = comment;
-            comm.Content_Id = C_id;
-            comm.Posted_Username = User.Identity.GetUserName();
+            ContentViewModels cm = new ContentViewModels();
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
-                phdbec.Comments.Add(comm);
-                try
-                {
-                    phdbec.SaveChanges();
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                if (comment != null) {
+                    Comment comm = new Comment();
+                    comm.Comment_Id = (int)LongGenerator();
+                    comm.User_Comment = comment.Replace("%20", " ");
+                    comm.Content_Id = id;
+                    comm.Posted_Username = User.Identity.GetUserName();
+
+                    phdbec.Comments.Add(comm);
+                    try
                     {
-                        foreach (var validationError in validationErrors.ValidationErrors)
+                        phdbec.SaveChanges();
+                    }
+                    catch (DbEntityValidationException dbEx)
+                    {
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
                         {
-                            Trace.TraceInformation("Property: {0} Error: {1}",
-                                                    validationError.PropertyName,
-                                                    validationError.ErrorMessage);
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                Trace.TraceInformation("Property: {0} Error: {1}",
+                                                        validationError.PropertyName,
+                                                        validationError.ErrorMessage);
+                            }
                         }
                     }
                 }
+                cm.theComments = phdbec.Comments.Where(c => c.Content_Id == id).ToList();
+                var meow = id;
+                cm.theContent = phdbec.Contents.Where(p => p.C_Id == id).Single();
+                var woof = cm.theContent.C_Id;
+
+                List<Tag> thetags = new List<Tag>();
+                thetags = phdbec.Tags.ToList();
+                List<TaggerViewModel> tvm = new List<TaggerViewModel>();
+                foreach (Tag t in thetags)
+                {
+                    tvm.Add(new TaggerViewModel() { slatedId = t.T_Id, slatedTitle = t.TagTitle });
+                }
+                ContentViewModels cvm = new ContentViewModels();
+                cvm.theTags = tvm;
             }
-            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+            return PartialView("_CommentPartialView", cm);
         }
 
         [Authorize]
@@ -223,34 +241,6 @@ namespace PostHost.Controllers
             {
                 cvm.theContent = phdbec.Contents.Find(C_Id);
 
-                LikeViewModels LikeVM = new LikeViewModels();
-                LikeVM.contentId = cvm.theContent.C_Id;
-                LikeVM.theLikes = cvm.theContent.Likes;
-                LikeVM.theDislikes = cvm.theContent.Dislikes;
-
-                string useid = User.Identity.GetUserId();
-
-                if (phdbec.Likes.Any(l => l.UserId == useid && l.ContentId == cvm.theContent.C_Id))
-                {
-                    if (phdbec.Likes.Where(r => r.UserId == useid && r.ContentId == cvm.theContent.C_Id).First().OneOrOther)
-                    {
-                        LikeVM.hasLiked = true;
-                        LikeVM.hasDisliked = false;
-                    }
-                    else
-                    {
-                        LikeVM.hasDisliked = true;
-                        LikeVM.hasLiked = false;
-                    }
-                }
-                else
-                {
-                    LikeVM.hasLiked = false;
-                    LikeVM.hasDisliked = false;
-                }
-
-                cvm.LVM = LikeVM;
-
                 cvm.theComments = phdbec.Comments.Where(c => c.Content_Id == C_Id).ToList();
 
                 var tagids = from t in phdbec.Tags
@@ -336,14 +326,35 @@ namespace PostHost.Controllers
             }
             return RedirectToAction("TagManager");//View("TagManager");
         }
-        
-        [Authorize]
-        public ActionResult likeModifier(int value, long toMod)
+
+        public ActionResult likeModifier(int value = 0, long toMod = -1)
         {
+            //LikeViewModels lvm = new LikeViewModels();
+
+            //using(PostHostDBEntities phdbec = new PostHostDBEntities())
+            //{
+            //    Content toUpdate = phdbec.Contents.Where(x => x.C_Id == toMod).First();
+            //    if (value == 1)
+            //    {
+            //        toUpdate.Likes++;
+            //        phdbec.SaveChanges();
+            //    }
+            //    else if (value == -1)
+            //    {
+            //        toUpdate.Dislikes++;
+            //        phdbec.SaveChanges();
+            //    }
+            //    lvm.contentId = toMod;
+            //    lvm.theLikes = toUpdate.Likes;
+            //    lvm.theDislikes = toUpdate.Dislikes;
+            //}
+            ContentViewModels cvm = new ContentViewModels();
             LikeViewModels lvm = new LikeViewModels();
 
-            using(PostHostDBEntities phdbec = new PostHostDBEntities())
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
+                cvm.theContent = phdbec.Contents.Find(toMod);
+
                 Like ld = new Like() { UserId = User.Identity.GetUserId(), ContentId = toMod };
                 Content toUpdate = phdbec.Contents.Where(x => x.C_Id == toMod).First();
                 if (value == 1)
@@ -378,14 +389,34 @@ namespace PostHost.Controllers
                 }
                 phdbec.SaveChanges();
 
-                PrefModifier(toMod, value);
+                //PrefModifier(toMod, value);
+                var useid = User.Identity.GetUserId();
+
+                if (phdbec.Likes.Any(l => l.UserId == useid && l.ContentId == cvm.theContent.C_Id))
+                {
+                    if (phdbec.Likes.Where(r => r.UserId == useid && r.ContentId == cvm.theContent.C_Id).First().OneOrOther)
+                    {
+                        lvm.hasLiked = true;
+                        lvm.hasDisliked = false;
+                    }
+                    else
+                    {
+                        lvm.hasDisliked = true;
+                        lvm.hasLiked = false;
+                    }
+                }
+                else
+                {
+                    lvm.hasLiked = false;
+                    lvm.hasDisliked = false;
+                }
 
                 lvm.contentId = toMod;
                 lvm.theLikes = toUpdate.Likes;
                 lvm.theDislikes = toUpdate.Dislikes;
             }
-            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
-            //return PartialView("_LikePartialView", lvm);
+
+            return PartialView("_LikePartialView", lvm);
         }
 
         private void PrefModifier(long conId, int LorD)

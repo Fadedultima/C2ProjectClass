@@ -3,16 +3,17 @@
     ViewBag.Title = "Home Page";
 }
 
-@using (Html.BeginForm("Index", "Home"))
-{ 
-    @Html.TextBox("searchstring")
-    <p>Search By: </p>
-    <select name="searchtype">
-        <option value="Title">Title</option>
-        <option value="Tag">Tag</option>
-    </select>
-    <input type="submit" value="Filter" />
-}
+<div id="searchingdiv">
+    @using (Html.BeginForm("Index", "Home"))
+    {
+        @Html.TextBox("searchstring", "", new { id = "searchstring" })
+        <select name="searchtype" id="searchtype">
+            <option value="Title">Title</option>
+            <option value="Tag">Tag</option>
+        </select>
+        <input type="submit" value="Search" id="searchbutton" class="btn btn-primary" />
+    }
+</div>
 <div id="gallery">
     <select name="sorttype" onch>
         <option value="Popularity">Popularity</option>

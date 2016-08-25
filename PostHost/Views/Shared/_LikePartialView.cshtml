@@ -1,30 +1,36 @@
 ﻿@model PostHost.Models.LikeViewModels
 
 <div class="likeselector">
-    <span>
-        @Model.theLikes
+    @Html.Hidden("C_id", Model.contentId, new { @class = "hiddenId" });
+    <div id="likediv">
+        <h3>Likes: @Model.theLikes</h3>
         @if (Model.hasLiked)
         {
-            <span> Liked</span>
+            <button class="btn btn-success likebut disabled" onclick="updatelikedis_div(1)">Like</button>
         }
         else
         {
-            @Html.ActionLink("Like", "likeModifier", new { value = 1, toMod = Model.contentId }, new { @class = "btn btn-success likebut" })
+            <button class="btn btn-success likebut" onclick="updatelikedis_div(1)">Like</button>
         }
-    </span>
-    <span>
-        @Model.theDislikes
+        @*@Html.ActionLink("Like", "likeModifier", new { value = 1, toMod = Model.contentId }, new { @class = "btn btn-success likebut" })*@
+    </div>
+    <div id="dislikediv">
+        <h3>Dislikes: @Model.theDislikes</h3>
         @if (Model.hasDisliked)
         {
-            <span> Disliked</span>
+            <button class="btn btn-danger dislikebut disabled" onclick="updatelikedis_div(-1)">Dislike</button>
         }
         else
         {
-            @Html.ActionLink("Dislike", "likeModifier", new { value = -1, toMod = Model.contentId }, new { @class = "btn btn-danger dislikebut" })
+            <button class="btn btn-danger dislikebut" onclick="updatelikedis_div(-1)">Dislike</button>
         }
-    </span>
+        @*@Html.ActionLink("Dislike", "likeModifier", new { value = -1, toMod = Model.contentId }, new { @class = "btn btn-danger dislikebut" })*@
+    </div>
 </div>
 
 <script type="text/javascript">
-    
+        function updatelikedis_div(num) {
+            var conid = $(".hiddenId").val();
+            $(".like_dislike_div").load('@(Url.Action("likeModifier", "Home",null, Request.Url.Scheme))?value=' + num + '&toMod=' + conid);
+        }
 </script>
