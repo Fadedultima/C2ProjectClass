@@ -328,26 +328,93 @@ namespace PostHost.Controllers
 
         public ActionResult likeModifier(int value = 0, long toMod = -1)
         {
+            //LikeViewModels lvm = new LikeViewModels();
+
+            //using(PostHostDBEntities phdbec = new PostHostDBEntities())
+            //{
+            //    Content toUpdate = phdbec.Contents.Where(x => x.C_Id == toMod).First();
+            //    if (value == 1)
+            //    {
+            //        toUpdate.Likes++;
+            //        phdbec.SaveChanges();
+            //    }
+            //    else if (value == -1)
+            //    {
+            //        toUpdate.Dislikes++;
+            //        phdbec.SaveChanges();
+            //    }
+            //    lvm.contentId = toMod;
+            //    lvm.theLikes = toUpdate.Likes;
+            //    lvm.theDislikes = toUpdate.Dislikes;
+            //}
+            ContentViewModels cvm = new ContentViewModels();
             LikeViewModels lvm = new LikeViewModels();
 
-            using(PostHostDBEntities phdbec = new PostHostDBEntities())
+            using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
+                cvm.theContent = phdbec.Contents.Find(toMod);
+
+                Like ld = new Like() { UserId = User.Identity.GetUserId(), ContentId = toMod };
                 Content toUpdate = phdbec.Contents.Where(x => x.C_Id == toMod).First();
                 if (value == 1)
                 {
+                    ld.OneOrOther = true;
+                    if (phdbec.Likes.Any(tl => tl.UserId == ld.UserId && tl.ContentId == ld.ContentId))
+                    {
+                        Like exLike = phdbec.Likes.Where(xl => xl.UserId == ld.UserId && xl.ContentId == ld.ContentId).First();
+                        exLike.OneOrOther = true;
+                        toUpdate.Dislikes--;
+                    }
+                    else
+                    {
+                        phdbec.Likes.Add(ld);
+                    }
                     toUpdate.Likes++;
-                    phdbec.SaveChanges();
                 }
                 else if (value == -1)
                 {
+                    ld.OneOrOther = false;
+                    if (phdbec.Likes.Any(td => td.UserId == ld.UserId && td.ContentId == ld.ContentId))
+                    {
+                        Like exDislike = phdbec.Likes.Where(xd => xd.UserId == ld.UserId && xd.ContentId == ld.ContentId).First();
+                        exDislike.OneOrOther = false;
+                        toUpdate.Likes--;
+                    }
+                    else
+                    {
+                        phdbec.Likes.Add(ld);
+                    }
                     toUpdate.Dislikes++;
-                    phdbec.SaveChanges();
                 }
+                phdbec.SaveChanges();
+
+                //PrefModifier(toMod, value);
+                var useid = User.Identity.GetUserId();
+
+                if (phdbec.Likes.Any(l => l.UserId == useid && l.ContentId == cvm.theContent.C_Id))
+                {
+                    if (phdbec.Likes.Where(r => r.UserId == useid && r.ContentId == cvm.theContent.C_Id).First().OneOrOther)
+                    {
+                        lvm.hasLiked = true;
+                        lvm.hasDisliked = false;
+                    }
+                    else
+                    {
+                        lvm.hasDisliked = true;
+                        lvm.hasLiked = false;
+                    }
+                }
+                else
+                {
+                    lvm.hasLiked = false;
+                    lvm.hasDisliked = false;
+                }
+
                 lvm.contentId = toMod;
                 lvm.theLikes = toUpdate.Likes;
                 lvm.theDislikes = toUpdate.Dislikes;
             }
-            //return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+
             return PartialView("_LikePartialView", lvm);
         }
 

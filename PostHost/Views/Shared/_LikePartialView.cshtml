@@ -4,12 +4,26 @@
     @Html.Hidden("C_id", Model.contentId, new { @class = "hiddenId" });
     <div id="likediv">
         <h3>Likes: @Model.theLikes</h3>
-        <button class="btn btn-success likebut" onclick="updatelikedis_div(1)">Like</button>
+        @if (Model.hasLiked)
+        {
+            <button class="btn btn-success likebut disabled" onclick="updatelikedis_div(1)">Like</button>
+        }
+        else
+        {
+            <button class="btn btn-success likebut" onclick="updatelikedis_div(1)">Like</button>
+        }
         @*@Html.ActionLink("Like", "likeModifier", new { value = 1, toMod = Model.contentId }, new { @class = "btn btn-success likebut" })*@
     </div>
     <div id="dislikediv">
         <h3>Dislikes: @Model.theDislikes</h3>
-        <button class="btn btn-danger dislikebut" onclick="updatelikedis_div(-1)">Dislike</button>
+        @if (Model.hasDisliked)
+        {
+            <button class="btn btn-danger dislikebut disabled" onclick="updatelikedis_div(-1)">Dislike</button>
+        }
+        else
+        {
+            <button class="btn btn-danger dislikebut" onclick="updatelikedis_div(-1)">Dislike</button>
+        }
         @*@Html.ActionLink("Dislike", "likeModifier", new { value = -1, toMod = Model.contentId }, new { @class = "btn btn-danger dislikebut" })*@
     </div>
 </div>
