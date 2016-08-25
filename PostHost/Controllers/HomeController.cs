@@ -65,34 +65,52 @@ namespace PostHost.Controllers
 
         //CODE FOR CREATING A COMMENT - ALEX
         [Authorize]
-        public ActionResult CommentCreator(string comment, long C_id)
+        public ActionResult CommentCreator(long id, string comment = null)
         {
-            Comment comm = new Comment();
-            comm.Comment_Id = (int)LongGenerator();
-            comm.User_Comment = comment;
-            comm.Content_Id = C_id;
-            comm.Posted_Username = User.Identity.GetUserName();
+            ContentViewModels cm = new ContentViewModels();
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
-                phdbec.Comments.Add(comm);
-                try
-                {
-                    phdbec.SaveChanges();
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                if (comment != null) {
+                    Comment comm = new Comment();
+                    comm.Comment_Id = (int)LongGenerator();
+                    comm.User_Comment = comment.Replace("%20", " ");
+                    comm.Content_Id = id;
+                    comm.Posted_Username = User.Identity.GetUserName();
+
+                    phdbec.Comments.Add(comm);
+                    try
                     {
-                        foreach (var validationError in validationErrors.ValidationErrors)
+                        phdbec.SaveChanges();
+                    }
+                    catch (DbEntityValidationException dbEx)
+                    {
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
                         {
-                            Trace.TraceInformation("Property: {0} Error: {1}",
-                                                    validationError.PropertyName,
-                                                    validationError.ErrorMessage);
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                Trace.TraceInformation("Property: {0} Error: {1}",
+                                                        validationError.PropertyName,
+                                                        validationError.ErrorMessage);
+                            }
                         }
                     }
                 }
+                cm.theComments = phdbec.Comments.Where(c => c.Content_Id == id).ToList();
+                var meow = id;
+                cm.theContent = phdbec.Contents.Where(p => p.C_Id == id).Single();
+                var woof = cm.theContent.C_Id;
+
+                List<Tag> thetags = new List<Tag>();
+                thetags = phdbec.Tags.ToList();
+                List<TaggerViewModel> tvm = new List<TaggerViewModel>();
+                foreach (Tag t in thetags)
+                {
+                    tvm.Add(new TaggerViewModel() { slatedId = t.T_Id, slatedTitle = t.TagTitle });
+                }
+                ContentViewModels cvm = new ContentViewModels();
+                cvm.theTags = tvm;
             }
-            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+            return PartialView("_CommentPartialView", cm);
         }
 
         [Authorize]
@@ -308,7 +326,7 @@ namespace PostHost.Controllers
             return RedirectToAction("TagManager");//View("TagManager");
         }
 
-        public ActionResult likeModifier(int value, long toMod)
+        public ActionResult likeModifier(int value = 0, long toMod = -1)
         {
             LikeViewModels lvm = new LikeViewModels();
 
@@ -318,19 +336,19 @@ namespace PostHost.Controllers
                 if (value == 1)
                 {
                     toUpdate.Likes++;
+                    phdbec.SaveChanges();
                 }
                 else if (value == -1)
                 {
                     toUpdate.Dislikes++;
+                    phdbec.SaveChanges();
                 }
-                phdbec.SaveChanges();
-
                 lvm.contentId = toMod;
                 lvm.theLikes = toUpdate.Likes;
                 lvm.theDislikes = toUpdate.Dislikes;
             }
-            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
-            //return PartialView("_LikePartialView", lvm);
+            //return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
+            return PartialView("_LikePartialView", lvm);
         }
 
         private long LongGenerator()

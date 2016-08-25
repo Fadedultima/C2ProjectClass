@@ -1,0 +1,34 @@
+﻿@model PostHost.Models.ContentViewModels
+@if (Request.IsAuthenticated)
+{
+    <div class="commentcreation">
+         @Html.Hidden("C_id", Model.theContent.C_Id, new { @class = "hiddenId"});
+         @Html.TextArea("comment", new { @class = "commenttext" });
+         <input class="btn btn-success" type="submit" value="Add Comment" onclick="updatecomment()"/>
+    </div>
+}
+else
+{
+    <div class="well-sm">
+        <h4>You must be logged in to leave a comment</h4>
+    </div>
+}
+<div class="showcomments">
+    @foreach (var c in Model.theComments)
+    {
+        <div class="well-sm comment">
+            <h6> Posted by: @c.Posted_Username</h6>
+            <br />
+            <p>@c.User_Comment</p>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+        function updatecomment() {
+            var conid = $(".hiddenId").val();
+            var text = $(".commenttext").val().replace(/ /g, "%20");
+            $(".comments_partial").load('@(Url.Action("CommentCreator","Home",null, Request.Url.Scheme))?comment=' + text + '&id=' + conid);
+        }
+</script>
+

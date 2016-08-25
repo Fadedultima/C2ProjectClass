@@ -8,6 +8,39 @@ h1, h2, h3, h4, h5, h6, p, label {
     color: white;
 }
 
+#searchingdiv{
+    margin-top: 20px;
+    text-align: center;
+}
+
+#searchstring{
+    color: white;
+    text-align:center;
+    padding: 5px;
+    background: #3B3930;
+    border: 1px solid;
+    border-color: dimgray;
+    border-radius: 20px 0px 0px 20px;
+}
+
+#searchstring:focus{
+    outline: none;
+}
+
+#searchtype{
+    padding: 6px;
+    background: #3B3936;
+    color:white;
+    position:relative;
+    display: inline-block;
+    border: 1px solid;
+    border-color: dimgray;
+}
+
+#searchbutton{
+    display: inline-block;
+}
+
 #gallery{
  margin-left: auto;
  margin-right: auto;
@@ -36,11 +69,29 @@ h1, h2, h3, h4, h5, h6, p, label {
     border-radius:5px;
 }
 
+.commenttext{
+    width:600px;
+    margin-top:10px;
+    margin-bottom:5px;
+    color: white;
+    background-color:#3B3936;
+    border-radius:5px;
+}
+
+.commenttext:focus{
+    outline: none;
+}
+
 .post-view{
     margin-left: auto;
     margin-right: auto;
     width: 1080px;
     margin-top: 20px;
+}
+
+#likediv, #dislikediv{
+    display: inline-block;
+    margin-right: 10px;
 }
 
 .post-title{
