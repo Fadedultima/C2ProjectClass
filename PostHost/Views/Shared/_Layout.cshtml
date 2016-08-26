@@ -22,7 +22,18 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Add", "testAdding", "Home")</li>
+                    <li>@Html.ActionLink(
+                       linkText: "Upload Local",
+                       actionName: "testAdding",
+                       controllerName: "Home",
+                       routeValues: new { upType = 0 },
+                       htmlAttributes: null)</li>
+                    <li>@Html.ActionLink(
+                       linkText: "Upload Remote",
+                       actionName: "testAdding",
+                       controllerName: "Home",
+                       routeValues: new { upType = 1 },
+                       htmlAttributes: null)</li>
                     <li>@Html.ActionLink("Tags", "TagManager", "Home")</li>
                     <li>@Html.ActionLink("Profile", "UserProfile", "Home")</li>
                 </ul>
