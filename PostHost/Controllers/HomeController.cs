@@ -26,7 +26,11 @@ namespace PostHost.Controllers
             {
                 if (searchstring == null)
                 {
-                    
+                    var query = (from x in phdbec.Likes
+                                join y in phdbec.TagToContents
+                                on x.ContentId equals y.C_Id
+                                select new { User = x.UserId, Tag = y.T_Id, Like = x.OneOrOther }).ToList();
+
                     Gallerylist = phdbec.Contents.OrderByDescending(c => c.Likes - c.Dislikes).ToList();
                     return View(Gallerylist);
                 }
@@ -34,7 +38,7 @@ namespace PostHost.Controllers
                 {
                     if (searchtype == "Title")
                     {
-                        Gallerylist = phdbec.Contents.Where(s => s.Title.ToUpper().Contains(searchstring.ToUpper())).ToList();
+                        Gallerylist = phdbec.Contents.Where(s => s.Title.ToUpper().Contains(searchstring.ToUpper())).OrderByDescending(c => c.Likes - c.Dislikes).ToList();
                         return View(Gallerylist);
                     }
                     else
@@ -115,8 +119,9 @@ namespace PostHost.Controllers
         }
 
         [Authorize]
-        public ActionResult testAdding()
+        public ActionResult testAdding(int upType)
         {
+
             List<Tag> thetags = new List<Tag>();
             using (PostHostDBEntities phdbec = new PostHostDBEntities())
             {
@@ -134,6 +139,7 @@ namespace PostHost.Controllers
             ContentViewModels cvm = new ContentViewModels();
 
             cvm.theTags = tvm;
+            cvm.uploadType = upType;
 
             return View("TestAddingBETTER", cvm);
         }
@@ -177,16 +183,20 @@ namespace PostHost.Controllers
 
                 //string fullpath = "https://posthoststorage.blob.core.windows.net/imagecontainer/" + imageName;
 
-
-
-                blockBlob.UploadFromStream(file.InputStream);
-                toAdd.ImgURL = im;
-                /*WebRequest req = WebRequest.Create(toAdd.ImgURL);
-                using (Stream stream = req.GetResponse().GetResponseStream())
+                if (toAddVM.uploadType == 1)
                 {
-                    blockBlob.UploadFromStream(stream);
+                    WebRequest req = WebRequest.Create(toAdd.ImgURL);
+                    using (Stream stream = req.GetResponse().GetResponseStream())
+                    {
+                        blockBlob.UploadFromStream(stream);
+                        toAdd.ImgURL = im;
+                    }
+                }
+                else
+                {
+                    blockBlob.UploadFromStream(file.InputStream);
                     toAdd.ImgURL = im;
-                }*/
+                }
             }
             catch (Exception ex)
             {
@@ -389,7 +399,7 @@ namespace PostHost.Controllers
                 }
                 phdbec.SaveChanges();
 
-                //PrefModifier(toMod, value);
+
                 var useid = User.Identity.GetUserId();
 
                 if (phdbec.Likes.Any(l => l.UserId == useid && l.ContentId == cvm.theContent.C_Id))
@@ -419,26 +429,7 @@ namespace PostHost.Controllers
             return PartialView("_LikePartialView", lvm);
         }
 
-        private void PrefModifier(long conId, int LorD)
-        {
-            using (PostHostDBEntities phdbec = new PostHostDBEntities())
-            {
-                List<TagToContent> contsTags = phdbec.TagToContents.Where(t => t.C_Id == conId).ToList();
-                foreach (TagToContent ttc in contsTags)
-                {
-                    UserLikeTag ult = new UserLikeTag() { UserId = User.Identity.GetUserId(), TagId = ttc.T_Id, Prefrence = LorD };
-                    if (phdbec.UserLikeTags.Any(u => u.UserId == ult.UserId && u.TagId == ult.TagId))
-                    {
-                        phdbec.UserLikeTags.Where(u => u.UserId == ult.UserId && u.TagId == ult.TagId).First().Prefrence += LorD;
-                    }
-                    else
-                    {
-                        phdbec.UserLikeTags.Add(ult);
-                    }
-                }
-                phdbec.SaveChanges();
-            }
-        }
+
 
         private long LongGenerator()
         {

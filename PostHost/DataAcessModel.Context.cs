@@ -30,6 +30,5 @@ namespace PostHost
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<TagToContent> TagToContents { get; set; }
         public virtual DbSet<Like> Likes { get; set; }
-        public virtual DbSet<UserLikeTag> UserLikeTags { get; set; }
     }
 }

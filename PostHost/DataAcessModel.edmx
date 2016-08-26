@@ -50,22 +50,12 @@
           <Property Name="C_Id" Type="bigint" Nullable="false" />
           <Property Name="T_Id" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="UserLikeTag">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="TagId" />
-          </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="TagId" Type="int" Nullable="false" />
-          <Property Name="Prefrence" Type="int" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="PostHostDBModelStoreContainer">
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Likes" EntityType="Self.Likes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagToContent" EntityType="Self.TagToContent" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserLikeTag" EntityType="Self.UserLikeTag" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -113,7 +103,6 @@
           <EntitySet Name="Tags" EntityType="Self.Tag" />
           <EntitySet Name="TagToContents" EntityType="Self.TagToContent" />
           <EntitySet Name="Likes" EntityType="PostHostDBModel.Like" />
-          <EntitySet Name="UserLikeTags" EntityType="PostHostDBModel.UserLikeTag" />
         </EntityContainer>
         <EntityType Name="Like">
           <Key>
@@ -123,15 +112,6 @@
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ContentId" Type="Int64" Nullable="false" />
           <Property Name="OneOrOther" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserLikeTag">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="TagId" />
-          </Key>
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="TagId" Type="Int32" Nullable="false" />
-          <Property Name="Prefrence" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -183,15 +163,6 @@
               <MappingFragment StoreEntitySet="Likes">
                 <ScalarProperty Name="OneOrOther" ColumnName="OneOrOther" />
                 <ScalarProperty Name="ContentId" ColumnName="ContentId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserLikeTags">
-            <EntityTypeMapping TypeName="PostHostDBModel.UserLikeTag">
-              <MappingFragment StoreEntitySet="UserLikeTag">
-                <ScalarProperty Name="Prefrence" ColumnName="Prefrence" />
-                <ScalarProperty Name="TagId" ColumnName="TagId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>

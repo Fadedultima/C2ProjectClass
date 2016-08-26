@@ -11,6 +11,7 @@ namespace PostHost.Models
         public List<TaggerViewModel> theTags { get; set; }
         public List<Comment> theComments { get; set; }
         public LikeViewModels LVM { get; set; }
+        public int uploadType { get; set; }
     }
 
     public class LikeViewModels

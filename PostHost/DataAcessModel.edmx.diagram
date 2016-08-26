@@ -10,7 +10,6 @@
         <EntityTypeShape EntityType="PostHostDBModel.Tag" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PostHostDBModel.TagToContent" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PostHostDBModel.Like" Width="1.5" PointX="3.375" PointY="4.75" />
-        <EntityTypeShape EntityType="PostHostDBModel.UserLikeTag" Width="1.5" PointX="5.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
