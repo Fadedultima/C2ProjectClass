@@ -3,8 +3,8 @@
 {
     <div class="commentcreation">
          @Html.Hidden("C_id", Model.theContent.C_Id, new { @class = "hiddenId"});
-         @Html.TextArea("comment", new { @class = "commenttext" });
-         <input class="btn btn-success" type="submit" value="Add Comment" onclick="updatecomment()"/>
+         @Html.TextArea("comment", new { @class = "commenttext", rows="5"});
+         <input class="btn btn-success subcomment" type="submit" value="Add Comment" onclick="updatecomment()"/>
     </div>
 }
 else
